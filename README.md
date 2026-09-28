@@ -94,25 +94,33 @@ MeetMind leverages the complete biomimetic cognitive cycle of the **Hindsight AP
 - **Hindsight Integration**: Leverages Hindsight's multi-strategy search (combining semantic vector embeddings, BM25 keyword matching, entity graph traversal, and temporal recency decay) to return an ordered set of memory fragments without noise.
 
 ### 3. Reflect (`reflect.py`)
-- **What it does**: Generates grounded, actionable intelligence from recalled memories.
-- **How it works**: Ingests all recalled memory fragments and runs cognitive reflection to detect patterns, unresolved action items, and evolution of commitments over time.
-- **Hindsight Integration**: Uses Hindsight Reflect to compile an 8-part executive briefing:
-  1. Contact Name
-  2. Previous Discussions (synthesized across multiple meetings)
-  3. Decisions Made
-  4. Unresolved Commitments
-  5. Deadlines & Milestones
-  6. Stakeholder Preferences & Communication Style
-  7. Follow-up Items
-  8. Three Strategic Questions to Ask in the Next Meeting
+- **What it does**: Generates grounded, longitudinal intelligence from recalled memories across all previous meetings.
+- **How it works**: Ingests all recalled memory fragments, parses commitment lifecycles (tracking promises that became completed, pending, or overdue/missed), incorporates the user's learned preparation style, and reflects across time.
+- **Hindsight Integration**: Uses Hindsight Reflect to compile a comprehensive **14-part executive briefing**:
+  1. **Contact Name**: Target stakeholder identity.
+  2. **Previous Discussions**: Synthesized themes across historical meetings.
+  3. **Decisions Made**: Cumulative decisions agreed upon over time.
+  4. **Promises and Commitments**: Explicit ownership, responsible party, and deadlines.
+  5. **Pending Follow-ups**: Unfinished action items requiring attention.
+  6. **Completed Follow-ups**: Items verified as delivered or resolved.
+  7. **Missed / Overdue Follow-ups**: Promises that passed their agreed deadline without delivery.
+  8. **Deadlines & Milestones**: Upcoming target delivery dates.
+  9. **Contact Communication Preferences**: Stakeholder style (e.g. blockers first, concise updates, async Slack).
+  10. **My Preferred Meeting Preparation Style**: Learned user briefing style (summary length, priority focus, tone).
+  11. **Relationship / Context**: Cumulative collaboration profile and interaction history.
+  12. **Important Changes Since the Last Meeting**: Overdue items, resolved milestones, and blockers.
+  13. **Recommended Questions for the Next Meeting**: 3 strategic, context-grounded questions.
+  14. **Suggested Opening / Talking Points**: Action-oriented conversation starters.
 
-### 4. Persistent Memory
-- Unlike prompt-stuffing approaches where history is wiped when a chat session ends, Hindsight memory banks persist perpetually. Meeting 5 effortlessly recalls context established in Meeting 1, even if months have elapsed.
+### 4. Commitment Lifecycle Tracking
+- Automatically tracks promises across meetings:
+  - **`Pending`**: A promise made whose deadline has not yet arrived or status is ongoing.
+  - **`Completed`**: A deliverable confirmed as reviewed, delivered, or accepted in a subsequent meeting.
+  - **`Missed / Overdue`**: A promise where the deadline passed without delivery or was explicitly flagged as overdue.
 
-### 5. How Memory Improves Future Meeting Preparation
-- **Cumulative Learning**: Each meeting augments the existing bank. If Rahul asks for simplicity in Meeting 1, requests an export feature in Meeting 2, and stresses brevity in Meeting 3, the briefing synthesizes all three into a coherent strategy.
-- **Accountability Tracking**: Promises made to clients are tracked across time until explicitly closed out.
-- **Zero Hallucination Guardrails**: Unknown contacts or unmentioned topics receive clear empty indicators, ensuring executive reliability.
+### 5. Persistent Memory & User Style Learning
+- **Persistent Memory**: Unlike stateless LLM chatbots where history vanishes between sessions, Hindsight memory banks persist indefinitely. Meeting 5 seamlessly recalls context established in Meeting 1.
+- **User Style Learning (`POST & GET /preferences/user`)**: MeetMind learns your personal briefing preferences (e.g. "Ultra-concise bullet points", "Blockers first", "Direct & action-oriented") and adapts future briefings automatically.
 
 ---
 
@@ -121,7 +129,7 @@ MeetMind leverages the complete biomimetic cognitive cycle of the **Hindsight AP
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        Executive Browser UI                            │
-│           (HTML5, Vanilla JS, Glassmorphism CSS, Trace Drawer)         │
+│    (HTML5, Vanilla JS, Responsive CSS, Memory Timeline, Status Badges) │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼  REST API (JSON over HTTP)
@@ -129,19 +137,23 @@ MeetMind leverages the complete biomimetic cognitive cycle of the **Hindsight AP
 │                           FastAPI Backend                              │
 │              (main.py - CORS, Validation, Async Handlers)              │
 │                                                                        │
-│   POST /meetings          GET /prepare/{contact}         GET /health   │
+│   POST /meetings                  GET /prepare/{contact}               │
+│   GET /followups/{contact}        POST & GET /preferences/user         │
+│   GET /health                     GET /                                │
 └─────────┬───────────────────────────────┬──────────────────────────────┘
           │                               │
           ▼                               ▼
 ┌──────────────────┐            ┌──────────────────┐
 │    retain.py     │            │    recall.py     │
-│ (Memory Ingest)  │            │ (Hybrid Search)  │
-└─────────┬────────┘            └─────────┬────────┘
+│ (Memory Ingest)  │            │ (Hybrid Search & │
+└─────────┬────────┘            │  Commitment FSM) │
+          │                     └─────────┬────────┘
           │                               │
           │                               ▼
           │                     ┌──────────────────┐
           │                     │    reflect.py    │
-          │                     │ (Reasoning Core) │
+          │                     │ (14-Part Briefing│
+          │                     │   & Synthesis)   │
           │                     └─────────┬────────┘
           │                               │
           ▼                               ▼
@@ -155,15 +167,16 @@ MeetMind leverages the complete biomimetic cognitive cycle of the **Hindsight AP
 
 ## Features
 
-- **Structured Meeting Capture**: Clean form to ingest meeting contact, date, and notes with instant feedback.
-- **Visible 4-Step Processing Pipeline**: Visual stepper demonstrating:
-  `Save Meeting ──▶ Hindsight Memory ──▶ Recall Past Context ──▶ AI Briefing`
-- **8-Part Actionable Briefing**: Delivers a structured executive briefing covering past discussions, decisions, commitments, deadlines, preferences, follow-ups, and 3 strategic questions.
-- **Hindsight Memory Status & Trace**: Visual badge (`✓ Hindsight Memory Used`) and an expandable **Memory Trace Drawer** allowing users to inspect raw recalled fragments.
-- **Before & After Memory Impact Card**: Side-by-side comparison illustrating the difference between a stateless LLM (generic, hallucinated) vs. MeetMind + Hindsight (grounded, longitudinal).
-- **Interactive 60-Second Demo Bar**: Preset buttons to immediately test multi-meeting synthesis (Rahul), contact isolation (Priya), and zero-hallucination guardrails (Unknown Contact).
-- **Strict Contact Memory Isolation**: Memories for Contact A never bleed into Contact B.
-- **Robust Error Handling**: Graceful degradation, clear error banners, and non-blocking asynchronous execution.
+- **Longitudinal Meeting Intelligence**: Tracks context across days, weeks, or months of sequential meetings.
+- **Cross-Meeting Commitment Tracking**: Categorizes every promise into `Pending`, `Completed`, or `Missed / Overdue`.
+- **Learned User Preparation Style**: Persistent memory customization for summary length, priority order, and communication tone.
+- **14-Part Executive Briefing**: In-depth, grounded pre-meeting briefing with zero fabricated facts.
+- **What MeetMind Learned Card**: Highlights cumulative stakeholder insights and commitment lifecycle status.
+- **Chronological Memory Timeline**: Visual timeline of all prior interactions with exact dates and notes.
+- **Visible 4-Step Processing Pipeline**: Live pipeline stepper illustrating Retain ➔ Hindsight ➔ Recall ➔ AI Briefing.
+- **Memory Status Indicator**: Clear `✓ Hindsight Memory Used` badge confirming live memory grounding.
+- **Strict Contact Memory Isolation**: Shiva, Rahul, and Priya maintain 100% isolated memory spaces.
+- **Strict Zero Hallucination**: Unknown contacts return an explicit `Not available in memory.` notice.
 
 ---
 
@@ -294,19 +307,26 @@ python test_senior_qa.py
 ```
 *Expected Result: 12/12 PASS (100% success rate)*
 
-### 2. End-to-End Demo Scenario Verification
+### 2. Longitudinal Agent Product Verification Suite
+Validates all 15 core product requirements including commitment lifecycle states, user style learning, 14-part briefing, and 3-meeting Shiva scenario:
+```bash
+python test_longitudinal_agent.py
+```
+*Expected Result: 15/15 PASS (100% success rate)*
+
+### 3. End-to-End Demo Scenario Verification
 Validates the complete hackathon multi-meeting script (Rahul, Priya, UnknownPerson):
 ```bash
 python test_demo_scenario.py
 ```
 
-### 3. API & Backend Endpoint Suite
+### 4. API & Backend Endpoint Suite
 Verifies status codes, JSON validation, and error envelopes:
 ```bash
 python test_backend.py
 ```
 
-### 4. Hindsight Cloud Connectivity Diagnostic
+### 5. Hindsight Cloud Connectivity Diagnostic
 Verifies network connectivity and bank access:
 ```bash
 python test_connectivity.py

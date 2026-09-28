@@ -42,11 +42,7 @@
       --glow-accent: 0 0 24px rgba(139, 92, 246, 0.25);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg);
@@ -59,22 +55,18 @@
       padding-bottom: 80px;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    .container { max-width: 1220px; margin: 0 auto; padding: 0 24px; }
 
-    /* ---------------- HEADER ---------------- */
+    /* HEADER */
     header {
-      padding: 24px 0;
+      padding: 22px 0;
       border-bottom: 1px solid var(--border-light);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       position: sticky;
       top: 0;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(11, 15, 25, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       z-index: 100;
     }
 
@@ -86,11 +78,7 @@
       gap: 16px;
     }
 
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .brand-title { display: flex; align-items: center; gap: 14px; }
 
     .brand-icon {
       width: 44px;
@@ -116,14 +104,13 @@
     }
 
     .brand-text p {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       color: #93c5fd;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    /* HINDSIGHT STATUS BADGE */
     .hindsight-status-badge {
       display: inline-flex;
       align-items: center;
@@ -167,17 +154,16 @@
       border-radius: 50%;
       background: #64748b;
       display: inline-block;
-      position: relative;
     }
 
-    /* ---------------- DEMO PRESET TOOLBAR ---------------- */
+    /* DEMO TOOLBAR */
     .demo-bar {
-      background: rgba(17, 24, 39, 0.8);
+      background: rgba(17, 24, 39, 0.85);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-light);
       border-radius: var(--radius);
       padding: 16px 20px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -214,7 +200,7 @@
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       color: #e2e8f0;
-      padding: 6px 14px;
+      padding: 7px 14px;
       border-radius: 8px;
       font-size: 0.82rem;
       font-weight: 600;
@@ -236,33 +222,30 @@
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 8px 18px;
+      padding: 9px 20px;
       font-weight: 700;
       box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
     }
 
     .btn-chip-action:hover {
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: #ffffff;
-      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
     }
 
-    /* ---------------- PIPELINE VISUAL STEPPER ---------------- */
+    /* PIPELINE VISUAL STEPPER */
     .pipeline-container {
-      background: rgba(17, 24, 39, 0.7);
-      backdrop-filter: blur(8px);
+      background: rgba(17, 24, 39, 0.75);
       border: 1px solid var(--border-light);
       border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-sm);
+      padding: 14px 20px;
+      margin-bottom: 22px;
     }
 
     .pipeline-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
       gap: 8px;
     }
@@ -273,9 +256,6 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #94a3b8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .pipeline-steps {
@@ -286,13 +266,8 @@
     }
 
     @media (max-width: 900px) {
-      .pipeline-steps {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      .pipeline-arrow {
-        display: none;
-      }
+      .pipeline-steps { grid-template-columns: 1fr; gap: 8px; }
+      .pipeline-arrow { display: none; }
     }
 
     .pipeline-step {
@@ -331,95 +306,22 @@
       flex-shrink: 0;
     }
 
-    .pipeline-step.active .step-number {
-      background: #3b82f6;
-      color: white;
-      box-shadow: 0 0 10px #3b82f6;
-    }
+    .pipeline-step.active .step-number { background: #3b82f6; color: white; }
+    .pipeline-step.completed .step-number { background: #10b981; color: white; }
+    .step-text-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.5px; color: #f1f5f9; text-transform: uppercase; }
+    .step-text-desc { font-size: 0.72rem; color: #94a3b8; }
+    .pipeline-arrow { color: #475569; font-size: 1.1rem; font-weight: bold; text-align: center; }
 
-    .pipeline-step.completed .step-number {
-      background: #10b981;
-      color: white;
-    }
-
-    .step-text-title {
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: #f1f5f9;
-      text-transform: uppercase;
-    }
-
-    .step-text-desc {
-      font-size: 0.72rem;
-      color: #94a3b8;
-    }
-
-    .pipeline-arrow {
-      color: #475569;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    /* ---------------- BEFORE / AFTER COMPARISON ---------------- */
-    .compare-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    @media (max-width: 860px) {
-      .compare-section {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .compare-card {
-      border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      font-size: 0.85rem;
-      border: 1px solid;
-    }
-
-    .compare-before {
-      background: rgba(239, 68, 68, 0.05);
-      border-color: rgba(239, 68, 68, 0.25);
-    }
-
-    .compare-after {
-      background: rgba(16, 185, 129, 0.05);
-      border-color: rgba(16, 185, 129, 0.25);
-    }
-
-    .compare-title {
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .compare-before .compare-title { color: #f87171; }
-    .compare-after .compare-title { color: #34d399; }
-    .compare-desc { color: #cbd5e1; line-height: 1.5; }
-
-    /* ---------------- MAIN WORKSPACE GRID ---------------- */
+    /* WORKSPACE GRID */
     .workspace-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 28px;
+      gap: 22px;
+      margin-bottom: 24px;
     }
 
-    @media (max-width: 880px) {
-      .workspace-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 920px) {
+      .workspace-grid { grid-template-columns: 1fr; }
     }
 
     .panel {
@@ -428,15 +330,14 @@
       border-radius: var(--radius-lg);
       padding: 24px;
       box-shadow: var(--shadow-md);
-      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
     .panel-header {
-      margin-bottom: 20px;
-      padding-bottom: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border-light);
     }
 
@@ -450,7 +351,7 @@
     }
 
     .panel-title {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #ffffff;
       display: flex;
@@ -458,7 +359,6 @@
       gap: 10px;
     }
 
-    /* Subcard layout inside panels */
     .subcard {
       background: var(--surface-card);
       border: 1px solid var(--border);
@@ -479,7 +379,6 @@
       gap: 6px;
     }
 
-    /* FORMS & INPUTS */
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -488,14 +387,10 @@
     }
 
     @media (max-width: 600px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
+      .form-row { grid-template-columns: 1fr; }
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 14px; }
 
     label {
       display: block;
@@ -505,7 +400,7 @@
       margin-bottom: 6px;
     }
 
-    input[type="text"], input[type="date"], textarea {
+    input[type="text"], input[type="date"], select, textarea {
       width: 100%;
       background: rgba(11, 15, 25, 0.8);
       border: 1px solid var(--border);
@@ -517,18 +412,14 @@
       transition: all 0.2s ease;
     }
 
-    input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
+    input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--border-focus);
       background: rgba(11, 15, 25, 0.95);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-      line-height: 1.5;
-    }
+    textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
 
     /* BUTTONS */
     .btn {
@@ -542,7 +433,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       border: none;
     }
 
@@ -570,11 +461,7 @@
       transform: translateY(-1px);
     }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none !important;
-    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .spinner {
       width: 16px;
@@ -585,11 +472,8 @@
       animation: spin 0.7s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* IN-CARD NOTIFICATIONS */
     .toast {
       padding: 12px 16px;
       border-radius: var(--radius-sm);
@@ -599,7 +483,6 @@
       align-items: center;
       gap: 10px;
       animation: fadeIn 0.2s ease;
-      line-height: 1.4;
     }
 
     @keyframes fadeIn {
@@ -607,62 +490,49 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .toast.success {
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      color: #34d399;
-      display: flex;
+    .toast.success { background: var(--success-bg); border: 1px solid var(--success-border); color: #34d399; display: flex; }
+    .toast.error { background: var(--error-bg); border: 1px solid var(--error-border); color: #f87171; display: flex; }
+
+    /* USER PREFERENCES PANEL */
+    .pref-panel {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .toast.error {
-      background: var(--error-bg);
-      border: 1px solid var(--error-border);
-      color: #f87171;
-      display: flex;
+    .pref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
     }
 
-    /* ---------------- EMPTY STATE ---------------- */
+    /* EMPTY STATE */
     .empty-briefing-card {
       background: var(--surface);
       border: 1px dashed var(--border);
       border-radius: var(--radius-lg);
-      padding: 40px 24px;
+      padding: 38px 24px;
       text-align: center;
-      margin-bottom: 28px;
-      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
     }
 
-    .empty-briefing-icon {
-      font-size: 2.8rem;
-      margin-bottom: 14px;
-      opacity: 0.8;
-    }
+    .empty-briefing-icon { font-size: 2.8rem; margin-bottom: 12px; opacity: 0.8; }
+    .empty-briefing-title { font-size: 1.2rem; font-weight: 700; color: #f8fafc; margin-bottom: 8px; }
+    .empty-briefing-subtitle { font-size: 0.88rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 20px auto; line-height: 1.55; }
 
-    .empty-briefing-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #f8fafc;
-      margin-bottom: 8px;
-    }
-
-    .empty-briefing-subtitle {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      max-width: 580px;
-      margin: 0 auto 20px auto;
-      line-height: 1.55;
-    }
-
-    /* ---------------- SECTION 3: AI MEETING BRIEFING ---------------- */
+    /* LONGITUDINAL INTELLIGENCE & BRIEFING SECTION */
     .briefing-panel {
       background: var(--surface);
-      border: 1px solid rgba(59, 130, 246, 0.3);
+      border: 1px solid rgba(59, 130, 246, 0.35);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 30px;
       box-shadow: var(--shadow-lg), var(--glow-primary);
       display: none;
       animation: fadeIn 0.3s ease;
-      position: relative;
     }
 
     .briefing-topbar {
@@ -671,9 +541,9 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      padding-bottom: 20px;
+      padding-bottom: 18px;
       border-bottom: 1px solid var(--border-light);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .briefing-title-area h2 {
@@ -685,19 +555,8 @@
       gap: 10px;
     }
 
-    .briefing-title-area p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
+    .briefing-title-area p { font-size: 0.88rem; color: var(--text-muted); }
 
-    .briefing-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Memory Status Pill */
     .memory-status-indicator {
       display: inline-flex;
       align-items: center;
@@ -706,8 +565,6 @@
       border-radius: 9999px;
       font-size: 0.86rem;
       font-weight: 700;
-      letter-spacing: 0.2px;
-      transition: all 0.2s ease;
     }
 
     .memory-status-indicator.active {
@@ -723,11 +580,114 @@
       color: #fbbf24;
     }
 
-    /* Structured Cards Grid */
+    /* WHAT MEETMIND LEARNED CARD */
+    .learned-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(17, 24, 39, 0.95));
+      border: 1px solid #3b82f6;
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+    }
+
+    .learned-header {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .learned-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .learned-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .learned-box-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .learned-box-content { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; }
+
+    /* COMMITMENT STATUS BADGES */
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-completed { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; }
+    .badge-pending { background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #93c5fd; }
+    .badge-missed { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; }
+    .badge-unknown { background: rgba(148, 163, 184, 0.2); border: 1px solid #64748b; color: #cbd5e1; }
+
+    /* TIMELINE SECTION */
+    .timeline-container {
+      margin-bottom: 24px;
+      padding: 18px 20px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .timeline-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(11, 15, 25, 0.6);
+      border-left: 3px solid #3b82f6;
+      border-radius: 4px;
+      font-size: 0.86rem;
+      color: #e2e8f0;
+    }
+
+    .timeline-date { font-weight: 700; color: #60a5fa; min-width: 100px; font-size: 0.8rem; }
+
+    /* BRIEFING GRID */
     .briefing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
+      gap: 18px;
       margin-bottom: 24px;
     }
 
@@ -735,15 +695,9 @@
       background: var(--surface-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px 22px;
-      transition: all 0.2s ease;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
-    }
-
-    .briefing-card:hover {
-      border-color: rgba(59, 130, 246, 0.4);
-      background: var(--surface-hover);
     }
 
     .briefing-card-header {
@@ -760,88 +714,23 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .briefing-card-content {
-      font-size: 0.94rem;
-      color: #e2e8f0;
-      white-space: pre-wrap;
-      line-height: 1.6;
-      flex-grow: 1;
-    }
+    .briefing-card-content { font-size: 0.92rem; color: #e2e8f0; white-space: pre-wrap; line-height: 1.6; }
+    .briefing-card-content.missing { color: var(--text-dim); font-style: italic; }
 
-    .briefing-card-content.missing {
-      color: var(--text-dim);
-      font-style: italic;
-    }
-
-    /* Suggested Questions Section */
-    .questions-card {
-      grid-column: 1 / -1;
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(17, 24, 39, 0.9));
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      border-radius: var(--radius);
-      padding: 24px 26px;
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15);
-    }
-
-    .questions-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #c4b5fd;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .question-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: rgba(17, 24, 39, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      margin-bottom: 10px;
-      font-size: 0.94rem;
-      color: #f1f5f9;
-      line-height: 1.5;
-    }
-
-    .q-number {
-      background: rgba(139, 92, 246, 0.25);
-      color: #c4b5fd;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    /* Copy Button */
     .btn-copy {
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       color: #e2e8f0;
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      font-size: 0.84rem;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
     }
-
-    .btn-copy:hover {
-      background: var(--surface-hover);
-      border-color: #3b82f6;
-      color: #93c5fd;
-    }
+    .btn-copy:hover { border-color: #3b82f6; color: #93c5fd; }
   </style>
 </head>
 <body>
@@ -856,7 +745,6 @@
             <p>AI Meeting Intelligence</p>
           </div>
         </div>
-        <!-- VISIBLE HINDSIGHT CONNECTION STATUS -->
         <div class="header-status">
           <div class="hindsight-status-badge connected" id="backendBadge">
             <span class="status-pulse-dot"></span>
@@ -870,33 +758,75 @@
     <div class="demo-bar">
       <div class="demo-bar-top">
         <div class="demo-bar-title">
-          <span>⚡ Fast 60-Second Judge Demo Presets:</span>
+          <span>⚡ Fast Hackathon Judge Demo Presets (Longitudinal Memory):</span>
         </div>
-        <button class="btn-chip btn-chip-action" onclick="runAutoDemo()">
-          🚀 Run 60-Second Live Demo (Ingest 4 Meetings & Synthesize)
+        <button class="btn-chip btn-chip-action" onclick="runShivaAutoDemo()">
+          🚀 Run Complete Shiva Demo (3 Meetings Ingestion & Synthesis)
         </button>
       </div>
 
       <div class="demo-btn-group">
-        <button class="btn-chip" onclick="fillRahulM1()">1. Rahul M1 (Dashboard Request)</button>
-        <button class="btn-chip" onclick="fillRahulM2()">2. Rahul M2 (Prototype & Friday Promise)</button>
-        <button class="btn-chip" onclick="fillRahulM3()">3. Rahul M3 (Simplicity & Short Notes)</button>
+        <button class="btn-chip" onclick="fillShivaM1()">1. Shiva M1 (Dashboard & Friday Prototype)</button>
+        <button class="btn-chip" onclick="fillShivaM2()">2. Shiva M2 (Prototype Delivered & Excel Pending)</button>
+        <button class="btn-chip" onclick="fillShivaM3()">3. Shiva M3 (Excel Overdue & Blockers First)</button>
         <button class="btn-chip" onclick="fillPriyaM1()" style="border-color: #8b5cf6;">4. Priya M1 (Mobile App & Async)</button>
-        <button class="btn-chip" onclick="prepareQuick('Rahul')" style="color: #93c5fd; border-color: #3b82f6;">🔍 Prepare Rahul (Multi-Interaction)</button>
-        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981;">🔍 Prepare Shiva (Existing Memory)</button>
+        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981; font-weight: 700;">🔍 Prepare Shiva (Longitudinal)</button>
         <button class="btn-chip" onclick="prepareQuick('Priya')" style="color: #c4b5fd; border-color: #8b5cf6;">🔍 Prepare Priya (Isolated)</button>
-        <button class="btn-chip" onclick="prepareQuick('UnknownPerson')" style="color: #f59e0b; border-color: #f59e0b;">🛡️ Unknown Contact (Zero Hallucination)</button>
+        <button class="btn-chip" onclick="prepareQuick('Arjun')" style="color: #f59e0b; border-color: #f59e0b;">🛡️ Unknown Contact (Arjun)</button>
       </div>
 
-      <div id="autoDemoStatus" style="display: none; padding: 14px 18px; background: rgba(15, 23, 42, 0.9); border: 1px solid #3b82f6; border-radius: 8px; font-size: 0.88rem; color: #e2e8f0; line-height: 1.6;"></div>
+      <div id="autoDemoStatus" style="display: none; padding: 14px 18px; background: rgba(15, 23, 42, 0.92); border: 1px solid #3b82f6; border-radius: 8px; font-size: 0.88rem; color: #e2e8f0; line-height: 1.6;"></div>
+    </div>
+
+    <!-- MY MEETING PREFERENCES SECTION -->
+    <div class="pref-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <div class="panel-tag">Learned Preparation Style</div>
+          <h3 style="font-size: 1.15rem; color: #ffffff;">⚙️ My Meeting Preferences</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Stored directly in Hindsight long-term memory to customize all generated briefings.</p>
+        </div>
+        <button class="btn-chip" onclick="saveUserPreferences()" style="background: #2563eb; color: white; border-color: #3b82f6;">
+          💾 Save My Preferences to Hindsight
+        </button>
+      </div>
+
+      <div class="pref-grid">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="prefSummaryLength">Preferred Summary Length</label>
+          <select id="prefSummaryLength">
+            <option value="Short / Concise" selected>Short / Concise</option>
+            <option value="Medium / Balanced">Medium / Balanced</option>
+            <option value="Detailed / Comprehensive">Detailed / Comprehensive</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="prefPriorityOrder">What Should Appear First?</label>
+          <select id="prefPriorityOrder">
+            <option value="Blockers & Unresolved Issues First" selected>Blockers & Unresolved Issues First</option>
+            <option value="Action Items & Commitments First">Action Items & Commitments First</option>
+            <option value="Previous Decisions First">Previous Decisions First</option>
+            <option value="Strategic Questions First">Strategic Questions First</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="prefCommunicationStyle">Communication Style</label>
+          <select id="prefCommunicationStyle">
+            <option value="Direct & Action-Oriented" selected>Direct & Action-Oriented</option>
+            <option value="Executive & Formal">Executive & Formal</option>
+            <option value="Detailed & Analytical">Detailed & Analytical</option>
+          </select>
+        </div>
+      </div>
+      <div id="prefToast" class="toast"></div>
     </div>
 
     <!-- VISIBLE PIPELINE FLOW -->
     <div class="pipeline-container">
       <div class="pipeline-header">
-        <div class="pipeline-header-title">
-          <span>⚡ Live Memory Pipeline:</span>
-        </div>
+        <div class="pipeline-header-title">⚡ Live Memory Pipeline:</div>
         <div style="font-size: 0.8rem; color: #94a3b8;">
           Bank: <strong style="color: #60a5fa;" id="activeBankPill">{{ bank_id or 'meetmind-demo' }}</strong> (Isolated Biomimetic Graph)
         </div>
@@ -916,7 +846,7 @@
           <div class="step-number">2</div>
           <div class="step-info">
             <div class="step-text-title">HINDSIGHT MEMORY</div>
-            <div class="step-text-desc">Biomimetic retain & tagging</div>
+            <div class="step-text-desc">Longitudinal retain & tagging</div>
           </div>
         </div>
         <div class="pipeline-arrow">➔</div>
@@ -924,8 +854,8 @@
         <div class="pipeline-step" id="flowStep3">
           <div class="step-number">3</div>
           <div class="step-info">
-            <div class="step-text-title">RECALL PAST CONTEXT</div>
-            <div class="step-text-desc">Strict tag & hybrid search</div>
+            <div class="step-text-title">RECALL CONTEXT</div>
+            <div class="step-text-desc">Strict tag & commitment search</div>
           </div>
         </div>
         <div class="pipeline-arrow">➔</div>
@@ -933,46 +863,24 @@
         <div class="pipeline-step" id="flowStep4">
           <div class="step-number">4</div>
           <div class="step-info">
-            <div class="step-text-title">AI MEETING BRIEFING</div>
-            <div class="step-text-desc">Zero-hallucination synthesis</div>
+            <div class="step-text-title">AI BRIEFING</div>
+            <div class="step-text-desc">Zero-hallucination reflection</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- BEFORE / AFTER MEMORY IMPROVEMENT -->
-    <div class="compare-section">
-      <div class="compare-card compare-before">
-        <div class="compare-title">
-          <span>❌ WITHOUT HINDSIGHT (Standard Amnesic LLM)</span>
-        </div>
-        <div class="compare-desc">
-          Zero cross-session recall. Forgets past discussions, misses Friday prototype promise, and asks repetitive questions: <em>"Hi Rahul, what are we working on today?"</em>
-        </div>
-      </div>
-
-      <div class="compare-card compare-after">
-        <div class="compare-title">
-          <span>✅ WITH MEETMIND + HINDSIGHT MEMORY</span>
-        </div>
-        <div class="compare-desc">
-          Persistent biomimetic graph. Recalls sales dashboard history, prototype review, Friday deadline promise, and preference for concise bulleted updates.
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN WORKSPACE: SECTIONS 1 & 2 -->
+    <!-- MAIN WORKSPACE GRID -->
     <div class="workspace-grid">
       <!-- CARD 1: MEETING DETAILS & SAVE MEETING -->
       <section class="panel">
         <div>
           <div class="panel-header">
             <div class="panel-tag">Retain Layer</div>
-            <h2 class="panel-title"><span>📥</span> Save Meeting</h2>
+            <h2 class="panel-title"><span>📥</span> Save Meeting Memory</h2>
           </div>
 
           <form id="saveMeetingForm" onsubmit="handleSaveMeeting(event)">
-            <!-- Meeting Details Subcard -->
             <div class="subcard">
               <div class="subcard-header">
                 <span>📋</span> Meeting Details
@@ -980,7 +888,7 @@
               <div class="form-row">
                 <div class="form-group" style="margin-bottom: 0;">
                   <label for="contactName">Contact Name *</label>
-                  <input type="text" id="contactName" placeholder="e.g. Rahul, Shiva" required autocomplete="off" />
+                  <input type="text" id="contactName" placeholder="e.g. Shiva, Priya" required autocomplete="off" />
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                   <label for="meetingDate">Meeting Date *</label>
@@ -989,13 +897,12 @@
               </div>
             </div>
 
-            <!-- Notes & Commitments -->
             <div class="form-group">
               <label for="meetingNotes">Meeting Notes, Commitments & Preferences *</label>
               <textarea id="meetingNotes" placeholder="Example:
-Rahul requested a sales analytics dashboard.
-We promised a working prototype by Friday.
-Rahul prefers short progress updates and concise summaries." required></textarea>
+Shiva requested a student management dashboard.
+I promised to deliver the prototype by Friday.
+Shiva prefers short progress updates." required></textarea>
             </div>
 
             <button type="submit" id="saveBtn" class="btn btn-primary">
@@ -1013,7 +920,7 @@ Rahul prefers short progress updates and concise summaries." required></textarea
         <div>
           <div class="panel-header">
             <div class="panel-tag">Recall & Reflect Layer</div>
-            <h2 class="panel-title"><span>🔍</span> Prepare for Meeting</h2>
+            <h2 class="panel-title"><span>🔍</span> Prepare for a Meeting</h2>
           </div>
 
           <form id="prepareMeetingForm" onsubmit="handlePrepareMeeting(event)">
@@ -1023,14 +930,13 @@ Rahul prefers short progress updates and concise summaries." required></textarea
               </div>
               <div class="form-group" style="margin-bottom: 10px;">
                 <label for="prepContactName">Contact Name *</label>
-                <input type="text" id="prepContactName" placeholder="e.g. Rahul, Shiva, Priya" required autocomplete="off" />
+                <input type="text" id="prepContactName" placeholder="e.g. Shiva, Priya, Arjun" required autocomplete="off" />
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                 <span style="font-size: 0.75rem; color: var(--text-dim); align-self: center;">Quick Select:</span>
-                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Rahul'">Rahul</button>
                 <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Shiva'">Shiva</button>
                 <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Priya'">Priya</button>
-                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='UnknownPerson'">Unknown</button>
+                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Arjun'">Arjun</button>
               </div>
             </div>
 
@@ -1049,22 +955,21 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       </section>
     </div>
 
-    <!-- SECTION 3: EMPTY STATE (Before briefing generation) -->
+    <!-- EMPTY STATE -->
     <div id="briefingEmptyState" class="empty-briefing-card">
       <div class="empty-briefing-icon">📋</div>
       <div class="empty-briefing-title">No Meeting Briefing Generated Yet</div>
       <div class="empty-briefing-subtitle">
-        Enter a contact name above, or click one of the quick demo buttons to see MeetMind recall multi-session history with zero hallucination.
+        Enter a contact name above, or click one of the quick demo buttons to see MeetMind recall multi-session history, follow-up statuses, and user preparation styles with zero hallucination.
       </div>
       <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-        <button class="btn-chip" onclick="prepareQuick('Rahul')" style="color: #93c5fd; border-color: #3b82f6;">Preview Rahul (3 Past Meetings)</button>
-        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981;">Preview Shiva (Existing Memory)</button>
-        <button class="btn-chip" onclick="prepareQuick('Priya')" style="color: #c4b5fd; border-color: #8b5cf6;">Preview Priya (Isolated Contact)</button>
-        <button class="btn-chip" onclick="prepareQuick('UnknownPerson')" style="color: #f59e0b; border-color: #f59e0b;">Test Unknown (Zero Hallucination)</button>
+        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981;">Prepare Shiva (3-Meeting Longitudinal)</button>
+        <button class="btn-chip" onclick="prepareQuick('Priya')" style="color: #c4b5fd; border-color: #8b5cf6;">Prepare Priya (Isolated Contact)</button>
+        <button class="btn-chip" onclick="prepareQuick('Arjun')" style="color: #f59e0b; border-color: #f59e0b;">Test Arjun (Zero Hallucination)</button>
       </div>
     </div>
 
-    <!-- SECTION 3: AI MEETING BRIEFING DISPLAY -->
+    <!-- AI MEETING BRIEFING & LONGITUDINAL INTELLIGENCE -->
     <section id="briefingSection" class="briefing-panel">
       <!-- ZERO-HALLUCINATION SAFE MODE BANNER -->
       <div id="zeroHallucinationAlert" style="display: none; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 20px; color: #fbbf24; font-size: 0.88rem;">
@@ -1073,11 +978,10 @@ Rahul prefers short progress updates and concise summaries." required></textarea
 
       <div class="briefing-topbar">
         <div class="briefing-title-area">
-          <h2><span>📋</span> AI Meeting Briefing</h2>
-          <p id="briefingSubtitle">Synthesized from persistent Hindsight memory.</p>
+          <h2><span>📋</span> AI Pre-Meeting Briefing</h2>
+          <p id="briefingSubtitle">Synthesized from persistent Hindsight memory with longitudinal context.</p>
         </div>
-        <div class="briefing-actions">
-          <!-- VISUAL FEATURE: Memory Status Indicator -->
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
           <div id="memoryStatusPill" class="memory-status-indicator active">
             <span>✓ Hindsight Memory Used</span>
           </div>
@@ -1087,73 +991,104 @@ Rahul prefers short progress updates and concise summaries." required></textarea
         </div>
       </div>
 
-      <!-- Structured Cards -->
-      <div class="briefing-grid">
-        <!-- Contact Card -->
-        <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>👤</span> Contact
+      <!-- WHAT MEETMIND LEARNED SECTION -->
+      <div class="learned-card" id="learnedSection">
+        <div class="learned-header">
+          <span>🧠</span> What MeetMind Learned Across Past Meetings
+        </div>
+        <div class="learned-grid">
+          <div class="learned-box">
+            <div class="learned-box-title"><span>👤</span> Contact Insights</div>
+            <div class="learned-box-content" id="learnedContactInsights">--</div>
           </div>
+          <div class="learned-box">
+            <div class="learned-box-title"><span>🤝</span> Commitment Lifecycle</div>
+            <div class="learned-box-content" id="learnedCommitmentsLifecycle">--</div>
+          </div>
+          <div class="learned-box">
+            <div class="learned-box-title"><span>⚙️</span> Applied User Style</div>
+            <div class="learned-box-content" id="learnedUserPrepStyle">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMORY TIMELINE -->
+      <div class="timeline-container" id="timelineContainer">
+        <div class="timeline-title">
+          <span>📅</span> Memory Timeline (<span id="timelineCount">0</span> interactions recorded)
+        </div>
+        <div class="timeline-list" id="timelineList"></div>
+      </div>
+
+      <!-- STRUCTURED BRIEFING CARDS -->
+      <div class="briefing-grid">
+        <div class="briefing-card">
+          <div class="briefing-card-header"><span>👤</span> 1. Contact</div>
           <div class="briefing-card-content" id="cardContact">--</div>
         </div>
 
-        <!-- Previous Discussions Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>💬</span> Previous Discussions
-          </div>
+          <div class="briefing-card-header"><span>💬</span> 2. Previous Discussions</div>
           <div class="briefing-card-content" id="cardDiscussions">--</div>
         </div>
 
-        <!-- Decisions Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>⚖️</span> Decisions
-          </div>
+          <div class="briefing-card-header"><span>⚖️</span> 3. Decisions Made</div>
           <div class="briefing-card-content" id="cardDecisions">--</div>
         </div>
 
-        <!-- Commitments Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>🤝</span> Commitments
-          </div>
+          <div class="briefing-card-header"><span>🤝</span> 4. Promises & Commitments</div>
           <div class="briefing-card-content" id="cardCommitments">--</div>
         </div>
 
-        <!-- Deadlines Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>⏰</span> Deadlines
-          </div>
+          <div class="briefing-card-header"><span>⏳</span> 5. Pending Follow-ups</div>
+          <div class="briefing-card-content" id="cardPendingFollowups">--</div>
+        </div>
+
+        <div class="briefing-card">
+          <div class="briefing-card-header"><span>✅</span> 6. Completed Follow-ups</div>
+          <div class="briefing-card-content" id="cardCompletedFollowups">--</div>
+        </div>
+
+        <div class="briefing-card" style="border-color: rgba(239, 68, 68, 0.4);">
+          <div class="briefing-card-header" style="color: #f87171;"><span>🚨</span> 7. Missed / Overdue Follow-ups</div>
+          <div class="briefing-card-content" id="cardMissedFollowups">--</div>
+        </div>
+
+        <div class="briefing-card">
+          <div class="briefing-card-header"><span>⏰</span> 8. Deadlines</div>
           <div class="briefing-card-content" id="cardDeadlines">--</div>
         </div>
 
-        <!-- Preferences Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>🎯</span> Preferences
-          </div>
-          <div class="briefing-card-content" id="cardPreferences">--</div>
+          <div class="briefing-card-header"><span>🎯</span> 9. Contact Preferences</div>
+          <div class="briefing-card-content" id="cardContactPreferences">--</div>
         </div>
 
-        <!-- Follow-ups Card -->
         <div class="briefing-card">
-          <div class="briefing-card-header">
-            <span>📌</span> Follow-ups
-          </div>
-          <div class="briefing-card-content" id="cardFollowups">--</div>
+          <div class="briefing-card-header"><span>⚙️</span> 10. My Preferred Meeting Style</div>
+          <div class="briefing-card-content" id="cardUserStyle">--</div>
         </div>
 
-        <!-- Suggested Questions Card -->
-        <div class="questions-card">
-          <div class="questions-title">
-            <span>💡</span> Suggested Questions for Next Meeting
-          </div>
-          <div id="questionsContainer"></div>
+        <div class="briefing-card">
+          <div class="briefing-card-header"><span>🔄</span> 11. Important Changes Since Last Meeting</div>
+          <div class="briefing-card-content" id="cardChanges">--</div>
         </div>
 
-        <!-- Raw Executive Briefing Collapsible -->
+        <div class="briefing-card">
+          <div class="briefing-card-header"><span>🗣️</span> 12. Suggested Opening Points</div>
+          <div class="briefing-card-content" id="cardOpenings">--</div>
+        </div>
+
+        <!-- Recommended Questions Card -->
+        <div class="briefing-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(17, 24, 39, 0.9)); border: 1px solid rgba(139, 92, 246, 0.4);">
+          <div class="briefing-card-header" style="color: #c4b5fd;"><span>💡</span> 13. Recommended Questions for Next Meeting</div>
+          <div id="questionsContainer" style="margin-top: 8px;"></div>
+        </div>
+
+        <!-- Raw Text Collapsible -->
         <div style="grid-column: 1 / -1;">
           <details style="background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px;">
             <summary style="cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #cbd5e1; user-select: none;">
@@ -1163,11 +1098,11 @@ Rahul prefers short progress updates and concise summaries." required></textarea
           </details>
         </div>
 
-        <!-- Hindsight Memory Trace (Audit Trail) -->
+        <!-- Hindsight Trace Collapsible -->
         <div style="grid-column: 1 / -1;">
           <details style="background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px;">
             <summary style="cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #93c5fd; user-select: none;">
-              🔍 View Hindsight Memory Trace (<span id="traceCount">0</span> facts recalled across meetings)
+              🔍 View Raw Hindsight Memory Trace (<span id="traceCount">0</span> facts recalled)
             </summary>
             <div id="memoryTraceList" style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;"></div>
           </details>
@@ -1177,11 +1112,13 @@ Rahul prefers short progress updates and concise summaries." required></textarea
   </div>
 
   <script>
-    // Set default date to today
+    // Initialize defaults
     document.getElementById("meetingDate").value = new Date().toISOString().split("T")[0];
 
-    // Check backend health on load
-    window.addEventListener("DOMContentLoaded", checkHealth);
+    window.addEventListener("DOMContentLoaded", () => {
+      checkHealth();
+      loadUserPreferences();
+    });
 
     async function checkHealth() {
       const badge = document.getElementById("backendBadge");
@@ -1207,59 +1144,98 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       }
     }
 
-    // Demo Presets Data (Exact Hackathon Scenario)
-    const DEMO_MEETINGS = {
-      rahul_1: {
-        contact: "Rahul",
+    async function loadUserPreferences() {
+      try {
+        const res = await fetch("/preferences/user");
+        if (res.ok) {
+          const data = await res.json();
+          const style = data.inferred_style || {};
+          if (style.summary_length) document.getElementById("prefSummaryLength").value = style.summary_length;
+          if (style.first_priority) document.getElementById("prefPriorityOrder").value = style.first_priority;
+          if (style.communication_style) document.getElementById("prefCommunicationStyle").value = style.communication_style;
+        }
+      } catch (e) {
+        console.warn("Could not load user preferences:", e);
+      }
+    }
+
+    async function saveUserPreferences() {
+      const length = document.getElementById("prefSummaryLength").value;
+      const priority = document.getElementById("prefPriorityOrder").value;
+      const comm = document.getElementById("prefCommunicationStyle").value;
+
+      try {
+        const res = await fetch("/preferences/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            preference_type: "meeting_style",
+            preference_value: `Summary length: ${length}. Priority order: ${priority}. Style: ${comm}.`
+          })
+        });
+        if (res.ok) {
+          showToast("prefToast", "✓ Successfully saved meeting preferences to Hindsight memory!", "success");
+        } else {
+          showToast("prefToast", "Failed to save preferences to Hindsight.", "error");
+        }
+      } catch (err) {
+        showToast("prefToast", `Error: ${err.message}`, "error");
+      }
+    }
+
+    // SHIVA DEMO SCENARIO DATA
+    const SHIVA_MEETINGS = {
+      m1: {
+        contact: "Shiva",
         date: "2026-09-10",
-        notes: "Rahul requested a sales dashboard. He wants weekly progress updates."
+        notes: "Shiva requested a student management dashboard. I promised to deliver the prototype by Friday. Shiva prefers short progress updates."
       },
-      rahul_2: {
-        contact: "Rahul",
+      m2: {
+        contact: "Shiva",
         date: "2026-09-17",
-        notes: "Rahul reviewed the dashboard prototype. He requested export functionality. We promised the updated version by Friday."
+        notes: "Shiva reviewed the dashboard prototype and requested Excel export. The prototype was delivered, but the Excel export is still pending."
       },
-      rahul_3: {
-        contact: "Rahul",
+      m3: {
+        contact: "Shiva",
         date: "2026-09-24",
-        notes: "Rahul said the dashboard should remain simple. He prefers short explanations."
+        notes: "Shiva asked for the Excel export again. The export was not delivered by the previous deadline. Shiva also said blockers should be discussed first."
       },
-      priya_1: {
+      priya_m1: {
         contact: "Priya",
         date: "2026-09-15",
         notes: "Priya requested a redesign of the mobile app onboarding flow. We committed to deliver the design mockups by October 5th. Priya prefers async Slack updates and Figma comments over scheduled video calls."
       }
     };
 
-    function fillRahulM1() {
-      const m = DEMO_MEETINGS.rahul_1;
+    function fillShivaM1() {
+      const m = SHIVA_MEETINGS.m1;
       document.getElementById("contactName").value = m.contact;
       document.getElementById("meetingDate").value = m.date;
       document.getElementById("meetingNotes").value = m.notes;
       document.getElementById("prepContactName").value = m.contact;
-      showToast("saveToast", "Loaded Rahul Meeting 1 (Sales Dashboard). Click 'Save to Memory'!", "success");
+      showToast("saveToast", "Loaded Shiva Meeting 1 (Dashboard Request & Friday Prototype Promise). Click 'Save to Memory'!", "success");
     }
 
-    function fillRahulM2() {
-      const m = DEMO_MEETINGS.rahul_2;
+    function fillShivaM2() {
+      const m = SHIVA_MEETINGS.m2;
       document.getElementById("contactName").value = m.contact;
       document.getElementById("meetingDate").value = m.date;
       document.getElementById("meetingNotes").value = m.notes;
       document.getElementById("prepContactName").value = m.contact;
-      showToast("saveToast", "Loaded Rahul Meeting 2 (Prototype & Friday Promise). Click 'Save to Memory'!", "success");
+      showToast("saveToast", "Loaded Shiva Meeting 2 (Prototype Delivered & Excel Export Pending). Click 'Save to Memory'!", "success");
     }
 
-    function fillRahulM3() {
-      const m = DEMO_MEETINGS.rahul_3;
+    function fillShivaM3() {
+      const m = SHIVA_MEETINGS.m3;
       document.getElementById("contactName").value = m.contact;
       document.getElementById("meetingDate").value = m.date;
       document.getElementById("meetingNotes").value = m.notes;
       document.getElementById("prepContactName").value = m.contact;
-      showToast("saveToast", "Loaded Rahul Meeting 3 (Simplicity & Short Notes). Click 'Save to Memory'!", "success");
+      showToast("saveToast", "Loaded Shiva Meeting 3 (Excel Export Missed/Overdue & Blockers First). Click 'Save to Memory'!", "success");
     }
 
     function fillPriyaM1() {
-      const m = DEMO_MEETINGS.priya_1;
+      const m = SHIVA_MEETINGS.priya_m1;
       document.getElementById("contactName").value = m.contact;
       document.getElementById("meetingDate").value = m.date;
       document.getElementById("meetingNotes").value = m.notes;
@@ -1267,17 +1243,19 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       showToast("saveToast", "Loaded Priya Meeting 1 (Mobile App & Async Preferences). Click 'Save to Memory'!", "success");
     }
 
+    // Compatibility Aliases for Rahul Hackathon Demo
+    function fillRahulM1() { fillShivaM1(); }
+    function fillRahulM2() { fillShivaM2(); }
+    function fillRahulM3() { fillShivaM3(); }
+    function runAutoDemo() { return runShivaAutoDemo(); }
+
     function setFlowStep(stepNum) {
       for (let i = 1; i <= 4; i++) {
         const el = document.getElementById(`flowStep${i}`);
         if (!el) continue;
-        if (i < stepNum) {
-          el.className = "pipeline-step completed";
-        } else if (i === stepNum) {
-          el.className = "pipeline-step active";
-        } else {
-          el.className = "pipeline-step";
-        }
+        if (i < stepNum) el.className = "pipeline-step completed";
+        else if (i === stepNum) el.className = "pipeline-step active";
+        else el.className = "pipeline-step";
       }
     }
 
@@ -1286,85 +1264,66 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       document.getElementById("prepareMeetingForm").dispatchEvent(new Event("submit"));
     }
 
-    // Auto-Run Complete Demo Scenario
-    async function runAutoDemo() {
+    // Auto-Run Complete Shiva Demo Scenario
+    async function runShivaAutoDemo() {
       const statusBox = document.getElementById("autoDemoStatus");
       statusBox.style.display = "block";
       statusBox.innerHTML = `
-        <div style="font-weight: 700; color: #93c5fd; margin-bottom: 8px;">🚀 Running 60-Second Live Hackathon Demo Scenario:</div>
-        <div id="demoStep1">⏳ [1/4] Storing Rahul Meeting 1 (Sales Dashboard)...</div>
-        <div id="demoStep2">⏳ [2/4] Waiting to store Rahul Meeting 2...</div>
-        <div id="demoStep3">⏳ [3/4] Waiting to store Rahul Meeting 3...</div>
-        <div id="demoStep4">⏳ [4/4] Waiting to store Priya Meeting 1 (Isolation Contact)...</div>
-        <div id="demoStep5">⏳ [5/5] Synthesizing multi-meeting briefing for Rahul...</div>
+        <div style="font-weight: 700; color: #93c5fd; margin-bottom: 8px;">🚀 Running 60-Second Live Hackathon Shiva Demo Scenario:</div>
+        <div id="demoStep1">⏳ [1/4] Storing Shiva Meeting 1 (Dashboard Request & Friday Promise)...</div>
+        <div id="demoStep2">⏳ [2/4] Waiting to store Shiva Meeting 2...</div>
+        <div id="demoStep3">⏳ [3/4] Waiting to store Shiva Meeting 3...</div>
+        <div id="demoStep4">⏳ [4/4] Synthesizing longitudinal briefing for Shiva...</div>
       `;
 
       try {
         setFlowStep(1);
-        // Step 1: Rahul M1
         const r1 = await fetch("/meetings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(DEMO_MEETINGS.rahul_1)
+          body: JSON.stringify(SHIVA_MEETINGS.m1)
         });
-        if (!r1.ok) throw new Error("Failed to store Rahul M1");
-        document.getElementById("demoStep1").innerHTML = "✅ [1/4] Stored Rahul Meeting 1 (Sales dashboard & weekly updates)";
+        if (!r1.ok) throw new Error("Failed to store Shiva M1");
+        document.getElementById("demoStep1").innerHTML = "✅ [1/4] Stored Shiva Meeting 1 (Dashboard request, Friday prototype promise, short updates)";
 
         setFlowStep(2);
-        // Step 2: Rahul M2
-        document.getElementById("demoStep2").innerHTML = "⏳ [2/4] Storing Rahul Meeting 2 (Prototype & Friday Promise)...";
+        document.getElementById("demoStep2").innerHTML = "⏳ [2/4] Storing Shiva Meeting 2 (Prototype Delivered & Excel Pending)...";
         const r2 = await fetch("/meetings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(DEMO_MEETINGS.rahul_2)
+          body: JSON.stringify(SHIVA_MEETINGS.m2)
         });
-        if (!r2.ok) throw new Error("Failed to store Rahul M2");
-        document.getElementById("demoStep2").innerHTML = "✅ [2/4] Stored Rahul Meeting 2 (Prototype review, export feature, Friday promise)";
+        if (!r2.ok) throw new Error("Failed to store Shiva M2");
+        document.getElementById("demoStep2").innerHTML = "✅ [2/4] Stored Shiva Meeting 2 (Prototype completed, Excel export pending)";
 
-        // Step 3: Rahul M3
-        document.getElementById("demoStep3").innerHTML = "⏳ [3/4] Storing Rahul Meeting 3 (Simplicity & Short Notes)...";
+        document.getElementById("demoStep3").innerHTML = "⏳ [3/4] Storing Shiva Meeting 3 (Excel Export Missed/Overdue & Blockers First)...";
         const r3 = await fetch("/meetings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(DEMO_MEETINGS.rahul_3)
+          body: JSON.stringify(SHIVA_MEETINGS.m3)
         });
-        if (!r3.ok) throw new Error("Failed to store Rahul M3");
-        document.getElementById("demoStep3").innerHTML = "✅ [3/4] Stored Rahul Meeting 3 (Keep simple & short explanations)";
-
-        // Step 4: Priya M1
-        document.getElementById("demoStep4").innerHTML = "⏳ [4/4] Storing Priya Meeting 1 (Mobile App Redesign)...";
-        const rp = await fetch("/meetings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(DEMO_MEETINGS.priya_1)
-        });
-        if (!rp.ok) throw new Error("Failed to store Priya M1");
-        document.getElementById("demoStep4").innerHTML = "✅ [4/4] Stored Priya Meeting 1 (Mobile onboarding, Oct 5th wireframes, async Slack)";
+        if (!r3.ok) throw new Error("Failed to store Shiva M3");
+        document.getElementById("demoStep3").innerHTML = "✅ [3/4] Stored Shiva Meeting 3 (Excel export missed deadline, blockers first preference)";
 
         setFlowStep(3);
-        // Step 5: Synthesize Briefing for Rahul
-        document.getElementById("demoStep5").innerHTML = "⚡ [5/5] Synthesizing multi-meeting briefing for Rahul via Hindsight Reflect...";
-        await prepareQuick("Rahul");
+        document.getElementById("demoStep4").innerHTML = "⚡ [4/4] Synthesizing longitudinal briefing for Shiva via Hindsight Reflect...";
+        await prepareQuick("Shiva");
         setFlowStep(4);
-        document.getElementById("demoStep5").innerHTML = "🎉 [5/5] Demo Complete! Rahul's briefing synthesized across 3 previous meetings. Test 'Prepare Priya' above to verify memory isolation!";
+        document.getElementById("demoStep4").innerHTML = "🎉 [4/4] Demo Complete! Shiva's briefing synthesized across all 3 meetings with commitment lifecycle (Prototype: Completed, Excel: Missed/Overdue).";
       } catch (err) {
         statusBox.innerHTML += `<div style="color: #ef4444; margin-top: 8px;">❌ Demo error: ${err.message}</div>`;
       }
     }
 
-    // SECTION 1: Save Meeting Memory (POST /meetings)
+    // Save Meeting (POST /meetings)
     async function handleSaveMeeting(e) {
       e.preventDefault();
       const contact = document.getElementById("contactName").value.trim();
       const date = document.getElementById("meetingDate").value;
       const notes = document.getElementById("meetingNotes").value.trim();
 
-      if (!contact) {
-        showToast("saveToast", "Please enter a valid contact name.", "error");
-        return;
-      }
-      if (!notes) {
-        showToast("saveToast", "Please enter meeting notes before saving.", "error");
+      if (!contact || !notes) {
+        showToast("saveToast", "Please provide contact name and notes.", "error");
         return;
       }
 
@@ -1373,7 +1332,6 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       const icon = document.getElementById("saveBtnIcon");
       const text = document.getElementById("saveBtnText");
 
-      // Loading state
       btn.disabled = true;
       icon.innerHTML = '<div class="spinner"></div>';
       text.innerText = "Saving to Hindsight Memory...";
@@ -1391,7 +1349,6 @@ Rahul prefers short progress updates and concise summaries." required></textarea
         if (response.ok && data.status === "success") {
           setFlowStep(2);
           showToast("saveToast", `✓ Successfully saved meeting memory for ${contact} in Hindsight!`, "success");
-          // Pre-fill prepare form
           document.getElementById("prepContactName").value = contact;
         } else {
           showToast("saveToast", `Error: ${data.detail || data.message || "Failed to store memory"}`, "error");
@@ -1405,12 +1362,12 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       }
     }
 
-    // SECTION 2 & 3: Prepare for a Meeting (GET /prepare/{contact})
+    // Prepare Meeting (GET /prepare/{contact})
     async function handlePrepareMeeting(e) {
       e.preventDefault();
       const contact = document.getElementById("prepContactName").value.trim();
       if (!contact) {
-        showToast("prepToast", "Please enter a contact name to generate a briefing.", "error");
+        showToast("prepToast", "Please enter a contact name.", "error");
         return;
       }
 
@@ -1421,7 +1378,6 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       const briefingSection = document.getElementById("briefingSection");
       const emptyState = document.getElementById("briefingEmptyState");
 
-      // Loading state
       btn.disabled = true;
       icon.innerHTML = '<div class="spinner"></div>';
       text.innerText = "Synthesizing Briefing...";
@@ -1449,92 +1405,124 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       }
     }
 
-    // Parse and render the structured briefing cards
+    // Render Briefing
     function renderBriefing(contact, data) {
       const hasMemories = data.has_memories;
       const count = data.memory_count || 0;
       const raw = data.briefing || "";
       const memories = data.memories || [];
+      const learned = data.learned_summary || {};
+      const timeline = data.timeline || [];
 
-      // 1. Visual Feature: Memory Status Indicator
+      // Memory Status Indicator
       const pill = document.getElementById("memoryStatusPill");
       if (hasMemories) {
         pill.className = "memory-status-indicator active";
-        pill.innerHTML = `<span>✓ Hindsight Memory Used (${count} facts recalled across interactions)</span>`;
+        pill.innerHTML = `<span>✓ Hindsight Memory Used (${count} facts across meetings)</span>`;
       } else {
         pill.className = "memory-status-indicator empty";
-        pill.innerHTML = `<span>⚠ Zero Hallucination Mode (Not available in memory)</span>`;
+        pill.innerHTML = `<span>🛡️ Zero Hallucination Mode (No history)</span>`;
       }
 
-      // Zero-hallucination alert
       const zeroAlert = document.getElementById("zeroHallucinationAlert");
-      if (zeroAlert) {
-        zeroAlert.style.display = hasMemories ? "none" : "block";
+      if (zeroAlert) zeroAlert.style.display = hasMemories ? "none" : "block";
+
+      // What MeetMind Learned
+      const contactInsightsEl = document.getElementById("learnedContactInsights");
+      if (contactInsightsEl) {
+        const insights = learned.contact_insights || ["Not available in memory."];
+        contactInsightsEl.innerHTML = insights.map(i => `• ${i}`).join("<br>");
       }
 
-      document.getElementById("cardContact").innerText = contact;
+      const commitmentsLifecycleEl = document.getElementById("learnedCommitmentsLifecycle");
+      if (commitmentsLifecycleEl) {
+        const commits = learned.commitments_lifecycle || [];
+        if (commits.length > 0) {
+          commitmentsLifecycleEl.innerHTML = commits.map(c => {
+            let badgeClass = "badge-pending";
+            if (c.status === "Completed") badgeClass = "badge-completed";
+            else if (c.status.includes("Missed") || c.status.includes("Overdue")) badgeClass = "badge-missed";
+            return `<div><strong>${c.item}</strong>: <span class="badge-status ${badgeClass}">${c.status}</span></div>`;
+          }).join("");
+        } else {
+          commitmentsLifecycleEl.innerText = "Status not available from memory.";
+        }
+      }
 
-      // Extract sections from markdown or provide defaults
+      const userStyleEl = document.getElementById("learnedUserPrepStyle");
+      if (userStyleEl) {
+        const uStyle = learned.user_preparation_style || {};
+        userStyleEl.innerHTML = `
+          • Summary: <strong>${uStyle.summary_length || 'Concise'}</strong><br>
+          • Agenda: <strong>${uStyle.priority_order || 'Blockers First'}</strong><br>
+          • Tone: <strong>${uStyle.tone || 'Action-Oriented'}</strong>
+        `;
+      }
+
+      // Memory Timeline
+      const timelineCount = document.getElementById("timelineCount");
+      const timelineList = document.getElementById("timelineList");
+      if (timelineCount && timelineList) {
+        timelineCount.innerText = timeline.length;
+        if (timeline.length > 0) {
+          timelineList.innerHTML = timeline.map(ev => `
+            <div class="timeline-item">
+              <span class="timeline-date">${ev.date || 'Interaction'}</span>
+              <span>${ev.text || ''}</span>
+            </div>
+          `).join("");
+        } else {
+          timelineList.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No timeline history available.</div>`;
+        }
+      }
+
+      // Parse markdown sections
       const sections = parseMarkdownSections(raw);
 
+      setCardContent("cardContact", contact);
       setCardContent("cardDiscussions", sections["previous discussions"] || "Not available in memory.");
-      setCardContent("cardDecisions", sections["decisions"] || "Not available in memory.");
-      setCardContent("cardCommitments", sections["commitments"] || sections["unresolved commitments"] || "Not available in memory.");
+      setCardContent("cardDecisions", sections["decisions made"] || sections["decisions"] || "Not available in memory.");
+      setCardContent("cardCommitments", sections["promises and commitments"] || sections["commitments"] || "Not available in memory.");
+      setCardContent("cardPendingFollowups", sections["pending follow-ups"] || "Not available in memory.");
+      setCardContent("cardCompletedFollowups", sections["completed follow-ups"] || "Not available in memory.");
+      setCardContent("cardMissedFollowups", sections["missed / overdue follow-ups"] || sections["missed follow-ups"] || "Not available in memory.");
       setCardContent("cardDeadlines", sections["deadlines"] || "Not available in memory.");
-      setCardContent("cardPreferences", sections["preferences"] || "Not available in memory.");
-      setCardContent("cardFollowups", sections["follow-up items"] || sections["follow-ups"] || "Not available in memory.");
+      setCardContent("cardContactPreferences", sections["contact communication preferences"] || sections["preferences"] || "Not available in memory.");
+      setCardContent("cardUserStyle", sections["my preferred meeting preparation style"] || "Not available in memory.");
+      setCardContent("cardChanges", sections["important changes since the last meeting"] || "Not available in memory.");
+      setCardContent("cardOpenings", sections["suggested opening / talking points"] || "Not available in memory.");
 
-      // Render Full Generated Executive Briefing Text
-      const rawBriefingEl = document.getElementById("rawBriefingText");
-      if (rawBriefingEl) {
-        rawBriefingEl.innerText = raw;
-      }
-
-      // Render Suggested Questions
+      // Questions
       const questionsContainer = document.getElementById("questionsContainer");
       const questions = extractQuestions(raw);
       if (questions.length > 0) {
         questionsContainer.innerHTML = questions.map((q, idx) => `
-          <div class="question-item">
-            <span class="q-number">${idx + 1}</span>
-            <span>${q}</span>
+          <div style="background: rgba(17, 24, 39, 0.7); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; font-size: 0.92rem; color: #f1f5f9;">
+            <strong style="color: #c4b5fd;">Q${idx + 1}:</strong> ${q}
           </div>
         `).join("");
       } else {
-        questionsContainer.innerHTML = `
-          <div class="question-item">
-            <span class="q-number">1</span>
-            <span>What are your primary goals and priorities for our discussion today?</span>
-          </div>
-          <div class="question-item">
-            <span class="q-number">2</span>
-            <span>Are there any key milestones or expectations you would like to align on?</span>
-          </div>
-          <div class="question-item">
-            <span class="q-number">3</span>
-            <span>How do you prefer our team share progress updates moving forward?</span>
-          </div>
-        `;
+        questionsContainer.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No questions available in memory.</div>`;
       }
 
-      // Render Hindsight Memory Trace
+      // Raw Briefing text
+      const rawEl = document.getElementById("rawBriefingText");
+      if (rawEl) rawEl.innerText = raw;
+
+      // Memory Trace
       const traceCount = document.getElementById("traceCount");
       const traceList = document.getElementById("memoryTraceList");
       if (traceCount && traceList) {
         traceCount.innerText = memories.length;
-        if (memories.length > 0) {
-          traceList.innerHTML = memories.map(m => `
-            <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid #1e293b; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #94a3b8; font-size: 0.75rem; flex-wrap: wrap; gap: 6px;">
-                <span><strong>ID:</strong> ${m.id || 'hindsight-memory'}</span>
-                <span><strong>Type:</strong> ${m.type || 'world'} | <strong>Tags:</strong> ${(m.tags || []).join(', ')}</span>
-              </div>
-              <div style="color: #e2e8f0; line-height: 1.5;">${m.text || ''}</div>
+        traceList.innerHTML = memories.map(m => `
+          <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid #1e293b; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #94a3b8; font-size: 0.75rem;">
+              <span><strong>ID:</strong> ${m.id || 'hindsight-fact'}</span>
+              <span><strong>Type:</strong> ${m.type || 'fact'}</span>
             </div>
-          `).join("");
-        } else {
-          traceList.innerHTML = `<div style="color: #64748b; font-style: italic; font-size: 0.85rem;">No memory traces found for ${contact}. Zero hallucination enforced.</div>`;
-        }
+            <div style="color: #e2e8f0; line-height: 1.5;">${m.text || ''}</div>
+          </div>
+        `).join("");
       }
     }
 
@@ -1543,14 +1531,10 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       if (!el) return;
       const clean = text.replace(/^#+\s+/gm, "").trim();
       el.innerText = clean;
-      if (clean.toLowerCase().includes("not available in memory")) {
-        el.classList.add("missing");
-      } else {
-        el.classList.remove("missing");
-      }
+      if (clean.toLowerCase().includes("not available in memory")) el.classList.add("missing");
+      else el.classList.remove("missing");
     }
 
-    // Helper to extract sections from markdown headers
     function parseMarkdownSections(markdown) {
       const sections = {};
       const lines = markdown.split("\n");
@@ -1575,7 +1559,6 @@ Rahul prefers short progress updates and concise summaries." required></textarea
       return sections;
     }
 
-    // Helper to extract numbered questions
     function extractQuestions(markdown) {
       const questions = [];
       const lines = markdown.split("\n");
@@ -1583,15 +1566,12 @@ Rahul prefers short progress updates and concise summaries." required></textarea
         const qMatch = line.match(/^\s*(?:\d+\.|\*|-)\s+(.+)/);
         if (qMatch && (line.includes("?") || line.match(/^\s*\d+\.\s+/))) {
           const text = qMatch[1].replace(/^\*\*|\*\*$/g, "").trim();
-          if (text.includes("?")) {
-            questions.push(text);
-          }
+          if (text.includes("?")) questions.push(text);
         }
       }
       return questions.slice(0, 3);
     }
 
-    // Copy to clipboard
     function copyBriefingText() {
       const rawText = document.getElementById("rawBriefingText").innerText;
       if (!rawText) return;
@@ -1600,12 +1580,9 @@ Rahul prefers short progress updates and concise summaries." required></textarea
         const orig = btnText.innerText;
         btnText.innerText = "✓ Copied!";
         setTimeout(() => { btnText.innerText = orig; }, 2000);
-      }).catch(err => {
-        console.error("Clipboard error:", err);
       });
     }
 
-    // Toast helpers
     function showToast(id, msg, type) {
       const toast = document.getElementById(id);
       toast.innerText = msg;

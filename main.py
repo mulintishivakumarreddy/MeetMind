@@ -1,19 +1,21 @@
 """
 MeetMind – FastAPI Backend
 Provides clean REST API endpoints for:
-- POST /meetings         : Store meeting interaction in Hindsight Retain
-- GET /prepare/{contact} : Retrieve Hindsight memories and generate 8-part briefing
-- GET /health            : Backend & Hindsight connection health check
+- POST /meetings           : Store meeting interaction in Hindsight Retain
+- GET /prepare/{contact}   : Retrieve Hindsight memories and generate 14-part briefing
+- GET /followups/{contact} : Retrieve structured commitments and follow-ups with explicit status
+- POST /preferences/user   : Store user meeting preparation style in Hindsight
+- GET /preferences/user    : Retrieve learned user meeting style from Hindsight
+- GET /health              : Backend & Hindsight connection health check
 """
 
 import sys
 import logging
 from pathlib import Path
-from typing import Optional
-from fastapi import FastAPI, HTTPException, status
+from typing import Optional, Dict, Any
+from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
 from pydantic import BaseModel, Field
 
 # Ensure UTF-8 output on Windows terminals
@@ -36,7 +38,8 @@ from hindsight_config import (
     HINDSIGHT_API_KEY,
     HindsightHelper,
 )
-from retain import remember_meeting, parse_and_validate_date
+from retain import remember_meeting, remember_user_preference, parse_and_validate_date
+from recall import recall_contact, recall_user_preferences
 from reflect import prepare_meeting
 
 logger = logging.getLogger("meetmind.backend")
@@ -46,7 +49,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 app = FastAPI(
     title="MeetMind – AI Meeting Preparation Agent",
     description="Backend API powered by Hindsight persistent memory.",
-    version="1.0.0",
+    version="2.0.0",
 )
 
 # Optional template engine for UI
@@ -56,9 +59,17 @@ templates = Jinja2Templates(directory=str(templates_dir)) if templates_dir.exist
 
 # Request Models
 class MeetingCreateRequest(BaseModel):
-    contact: str = Field(..., min_length=1, description="Contact name, e.g. 'Rahul'")
+    contact: str = Field(..., min_length=1, description="Contact name, e.g. 'Shiva', 'Rahul'")
     date: Optional[str] = Field(None, description="Meeting date (YYYY-MM-DD or readable date)")
     notes: str = Field(..., min_length=1, description="Meeting discussion, commitments, deadlines, and preferences")
+
+
+class UserPreferenceRequest(BaseModel):
+    preference_type: Optional[str] = Field(default="meeting_style", description="Category: summary_length, priority_order, or communication_style")
+    preference_value: Optional[str] = Field(default=None, description="e.g. 'Short / Concise', 'Blockers first', 'Direct'")
+    summary_length: Optional[str] = None
+    first_priority: Optional[str] = None
+    communication_style: Optional[str] = None
 
 
 # -------------------------------------------------------------
@@ -118,6 +129,7 @@ def create_meeting(payload: MeetingCreateRequest):
             "date": result.get("date"),
             "bank_id": result.get("bank_id"),
             "items_count": result.get("items_count", 1),
+            "dimensions": result.get("dimensions"),
         },
     )
 
@@ -138,7 +150,8 @@ def prepare_empty_contact():
 @app.get("/prepare/{contact}", status_code=status.HTTP_200_OK)
 def get_meeting_briefing(contact: str):
     """
-    Retrieve relevant Hindsight memories and generate a personalized 8-part meeting briefing.
+    Retrieve relevant Hindsight memories and generate a personalized 14-part meeting briefing.
+    Includes memory timeline, commitment tracking, and 'What MeetMind Learned' longitudinal intelligence.
     """
     contact_clean = contact.strip()
     if not contact_clean:
@@ -164,13 +177,100 @@ def get_meeting_briefing(contact: str):
             "memory_count": result.get("memory_count", 0),
             "source": result.get("source"),
             "briefing": result.get("briefing"),
+            "timeline": result.get("timeline", []),
+            "commitments": result.get("commitments", {}),
+            "learned_summary": result.get("learned_summary", {}),
+            "user_style": result.get("user_style", {}),
             "memories": result.get("memories", []),
         },
     )
 
 
 # -------------------------------------------------------------
-# 3. GET /health
+# 3. GET /followups/{contact}
+# -------------------------------------------------------------
+@app.get("/followups/{contact}", status_code=status.HTTP_200_OK)
+def get_contact_followups(contact: str):
+    """
+    Retrieve longitudinal commitment & follow-up tracking for a specific contact.
+    Categorizes items into Completed, Pending, and Missed / Overdue.
+    """
+    contact_clean = contact.strip()
+    if not contact_clean:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Contact name parameter cannot be empty.",
+        )
+
+    recall_res = recall_contact(contact=contact_clean)
+    if not recall_res.get("success"):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=recall_res.get("message", "Failed to retrieve follow-ups from Hindsight."),
+        )
+
+    commitments = recall_res.get("commitments", {})
+    summary = {
+        "total": len(commitments.get("all_commitments", [])),
+        "pending": len(commitments.get("pending", [])),
+        "completed": len(commitments.get("completed", [])),
+        "missed": len(commitments.get("missed", [])),
+    }
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={
+            "status": "success",
+            "contact": contact_clean,
+            "has_commitments": len(commitments.get("all_commitments", [])) > 0,
+            "commitments": commitments,
+            "summary": summary,
+        },
+    )
+
+
+# -------------------------------------------------------------
+# 4. POST /preferences/user & GET /preferences/user
+# -------------------------------------------------------------
+@app.post("/preferences/user", status_code=status.HTTP_201_CREATED)
+def set_user_preference(payload: UserPreferenceRequest):
+    """
+    Store user meeting preparation and interaction style into Hindsight memory.
+    """
+    pref_val = payload.preference_value
+    if not pref_val:
+        parts = []
+        if payload.summary_length:
+            parts.append(f"Summary length: {payload.summary_length}")
+        if payload.first_priority:
+            parts.append(f"Priority order: {payload.first_priority}")
+        if payload.communication_style:
+            parts.append(f"Communication tone: {payload.communication_style}")
+        pref_val = ". ".join(parts) if parts else "Short / Concise. Blockers First."
+
+    res = remember_user_preference(
+        preference_type=payload.preference_type or "meeting_style",
+        preference_value=pref_val,
+        source="My Meeting Preferences UI",
+    )
+    if not res.get("success"):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=res.get("message", "Failed to store user preference in Hindsight."),
+        )
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"status": "success", **res})
+
+
+@app.get("/preferences/user", status_code=status.HTTP_200_OK)
+def get_user_preferences():
+    """
+    Retrieve current learned user meeting preparation style from Hindsight.
+    """
+    res = recall_user_preferences()
+    return JSONResponse(status_code=status.HTTP_200_OK, content=res)
+
+
+# -------------------------------------------------------------
+# 5. GET /health
 # -------------------------------------------------------------
 @app.get("/health", status_code=status.HTTP_200_OK)
 def health_check():
