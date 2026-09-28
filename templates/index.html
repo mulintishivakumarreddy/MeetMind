@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetMind – AI Meeting Intelligence</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --bg-gradient: radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12), transparent 45%),
+                         radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.12), transparent 45%);
+      --surface: #111827;
+      --surface-elevated: #1a2234;
+      --surface-card: #151d2f;
+      --surface-hover: #1f2a40;
+      --border: #1f293d;
+      --border-light: rgba(255, 255, 255, 0.08);
+      --border-focus: #3b82f6;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.35);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.12);
+      --warning-border: rgba(245, 158, 11, 0.35);
+      --error: #ef4444;
+      --error-bg: rgba(239, 68, 68, 0.12);
+      --error-border: rgba(239, 68, 68, 0.35);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --radius-lg: 16px;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+      --glow-primary: 0 0 24px rgba(59, 130, 246, 0.25);
+      --glow-accent: 0 0 24px rgba(139, 92, 246, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------------- HEADER ---------------- */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 28px;
+      position: sticky;
+      top: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: var(--glow-primary);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .brand-text h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      font-size: 0.84rem;
+      color: #93c5fd;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* HINDSIGHT STATUS BADGE */
+    .hindsight-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 8px 18px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .hindsight-status-badge.connected {
+      border-color: var(--success-border);
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .hindsight-status-badge.connected .status-pulse-dot {
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+    }
+
+    .hindsight-status-badge.degraded {
+      border-color: var(--warning-border);
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .hindsight-status-badge.degraded .status-pulse-dot {
+      background: var(--warning);
+      box-shadow: 0 0 10px var(--warning);
+    }
+
+    .status-pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #64748b;
+      display: inline-block;
+      position: relative;
+    }
+
+    /* ---------------- DEMO PRESET TOOLBAR ---------------- */
+    .demo-bar {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .demo-bar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .demo-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .demo-btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-chip {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-chip:hover {
+      background: var(--surface-hover);
+      border-color: #3b82f6;
+      color: #93c5fd;
+      transform: translateY(-1px);
+    }
+
+    .btn-chip-action {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 18px;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-chip-action:hover {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
+    }
+
+    /* ---------------- PIPELINE VISUAL STEPPER ---------------- */
+    .pipeline-container {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pipeline-header-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .pipeline-steps {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .pipeline-arrow {
+        display: none;
+      }
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-step.active {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.12);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+    }
+
+    .pipeline-step.completed {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--surface-elevated);
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pipeline-step.active .step-number {
+      background: #3b82f6;
+      color: white;
+      box-shadow: 0 0 10px #3b82f6;
+    }
+
+    .pipeline-step.completed .step-number {
+      background: #10b981;
+      color: white;
+    }
+
+    .step-text-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #f1f5f9;
+      text-transform: uppercase;
+    }
+
+    .step-text-desc {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .pipeline-arrow {
+      color: #475569;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* ---------------- BEFORE / AFTER COMPARISON ---------------- */
+    .compare-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .compare-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .compare-card {
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      border: 1px solid;
+    }
+
+    .compare-before {
+      background: rgba(239, 68, 68, 0.05);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .compare-after {
+      background: rgba(16, 185, 129, 0.05);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .compare-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .compare-before .compare-title { color: #f87171; }
+    .compare-after .compare-title { color: #34d399; }
+    .compare-desc { color: #cbd5e1; line-height: 1.5; }
+
+    /* ---------------- MAIN WORKSPACE GRID ---------------- */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 880px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .panel-header {
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .panel-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .panel-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Subcard layout inside panels */
+    .subcard {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .subcard-header {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* FORMS & INPUTS */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="date"], textarea {
+      width: 100%;
+      background: rgba(11, 15, 25, 0.8);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      background: rgba(11, 15, 25, 0.95);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    /* BUTTONS */
+    .btn {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* IN-CARD NOTIFICATIONS */
+    .toast {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      margin-top: 14px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.2s ease;
+      line-height: 1.4;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .toast.success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: #34d399;
+      display: flex;
+    }
+
+    .toast.error {
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: #f87171;
+      display: flex;
+    }
+
+    /* ---------------- EMPTY STATE ---------------- */
+    .empty-briefing-card {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 24px;
+      text-align: center;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .empty-briefing-icon {
+      font-size: 2.8rem;
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+
+    .empty-briefing-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+
+    .empty-briefing-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 20px auto;
+      line-height: 1.55;
+    }
+
+    /* ---------------- SECTION 3: AI MEETING BRIEFING ---------------- */
+    .briefing-panel {
+      background: var(--surface);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-lg), var(--glow-primary);
+      display: none;
+      animation: fadeIn 0.3s ease;
+      position: relative;
+    }
+
+    .briefing-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 24px;
+    }
+
+    .briefing-title-area h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .briefing-title-area p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .briefing-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Memory Status Pill */
+    .memory-status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: all 0.2s ease;
+    }
+
+    .memory-status-indicator.active {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+    }
+
+    .memory-status-indicator.empty {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+
+    /* Structured Cards Grid */
+    .briefing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .briefing-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .briefing-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+      background: var(--surface-hover);
+    }
+
+    .briefing-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #60a5fa;
+      font-weight: 800;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .briefing-card-content {
+      font-size: 0.94rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .briefing-card-content.missing {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* Suggested Questions Section */
+    .questions-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(17, 24, 39, 0.9));
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15);
+    }
+
+    .questions-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .question-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      font-size: 0.94rem;
+      color: #f1f5f9;
+      line-height: 1.5;
+    }
+
+    .q-number {
+      background: rgba(139, 92, 246, 0.25);
+      color: #c4b5fd;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Copy Button */
+    .btn-copy {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy:hover {
+      background: var(--surface-hover);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="brand-title">
+          <div class="brand-icon">🧠</div>
+          <div class="brand-text">
+            <h1>MeetMind</h1>
+            <p>AI Meeting Intelligence</p>
+          </div>
+        </div>
+        <!-- VISIBLE HINDSIGHT CONNECTION STATUS -->
+        <div class="header-status">
+          <div class="hindsight-status-badge connected" id="backendBadge">
+            <span class="status-pulse-dot"></span>
+            <span id="backendStatusText">Hindsight Memory: Connected</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- HACKATHON DEMO CONTROL BAR -->
+    <div class="demo-bar">
+      <div class="demo-bar-top">
+        <div class="demo-bar-title">
+          <span>⚡ Fast 60-Second Judge Demo Presets:</span>
+        </div>
+        <button class="btn-chip btn-chip-action" onclick="runAutoDemo()">
+          🚀 Run 60-Second Live Demo (Ingest 4 Meetings & Synthesize)
+        </button>
+      </div>
+
+      <div class="demo-btn-group">
+        <button class="btn-chip" onclick="fillRahulM1()">1. Rahul M1 (Dashboard Request)</button>
+        <button class="btn-chip" onclick="fillRahulM2()">2. Rahul M2 (Prototype & Friday Promise)</button>
+        <button class="btn-chip" onclick="fillRahulM3()">3. Rahul M3 (Simplicity & Short Notes)</button>
+        <button class="btn-chip" onclick="fillPriyaM1()" style="border-color: #8b5cf6;">4. Priya M1 (Mobile App & Async)</button>
+        <button class="btn-chip" onclick="prepareQuick('Rahul')" style="color: #93c5fd; border-color: #3b82f6;">🔍 Prepare Rahul (Multi-Interaction)</button>
+        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981;">🔍 Prepare Shiva (Existing Memory)</button>
+        <button class="btn-chip" onclick="prepareQuick('Priya')" style="color: #c4b5fd; border-color: #8b5cf6;">🔍 Prepare Priya (Isolated)</button>
+        <button class="btn-chip" onclick="prepareQuick('UnknownPerson')" style="color: #f59e0b; border-color: #f59e0b;">🛡️ Unknown Contact (Zero Hallucination)</button>
+      </div>
+
+      <div id="autoDemoStatus" style="display: none; padding: 14px 18px; background: rgba(15, 23, 42, 0.9); border: 1px solid #3b82f6; border-radius: 8px; font-size: 0.88rem; color: #e2e8f0; line-height: 1.6;"></div>
+    </div>
+
+    <!-- VISIBLE PIPELINE FLOW -->
+    <div class="pipeline-container">
+      <div class="pipeline-header">
+        <div class="pipeline-header-title">
+          <span>⚡ Live Memory Pipeline:</span>
+        </div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">
+          Bank: <strong style="color: #60a5fa;" id="activeBankPill">{{ bank_id or 'meetmind-demo' }}</strong> (Isolated Biomimetic Graph)
+        </div>
+      </div>
+
+      <div class="pipeline-steps">
+        <div class="pipeline-step active" id="flowStep1">
+          <div class="step-number">1</div>
+          <div class="step-info">
+            <div class="step-text-title">SAVE MEETING</div>
+            <div class="step-text-desc">Ingest notes & commitments</div>
+          </div>
+        </div>
+        <div class="pipeline-arrow">➔</div>
+
+        <div class="pipeline-step" id="flowStep2">
+          <div class="step-number">2</div>
+          <div class="step-info">
+            <div class="step-text-title">HINDSIGHT MEMORY</div>
+            <div class="step-text-desc">Biomimetic retain & tagging</div>
+          </div>
+        </div>
+        <div class="pipeline-arrow">➔</div>
+
+        <div class="pipeline-step" id="flowStep3">
+          <div class="step-number">3</div>
+          <div class="step-info">
+            <div class="step-text-title">RECALL PAST CONTEXT</div>
+            <div class="step-text-desc">Strict tag & hybrid search</div>
+          </div>
+        </div>
+        <div class="pipeline-arrow">➔</div>
+
+        <div class="pipeline-step" id="flowStep4">
+          <div class="step-number">4</div>
+          <div class="step-info">
+            <div class="step-text-title">AI MEETING BRIEFING</div>
+            <div class="step-text-desc">Zero-hallucination synthesis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEFORE / AFTER MEMORY IMPROVEMENT -->
+    <div class="compare-section">
+      <div class="compare-card compare-before">
+        <div class="compare-title">
+          <span>❌ WITHOUT HINDSIGHT (Standard Amnesic LLM)</span>
+        </div>
+        <div class="compare-desc">
+          Zero cross-session recall. Forgets past discussions, misses Friday prototype promise, and asks repetitive questions: <em>"Hi Rahul, what are we working on today?"</em>
+        </div>
+      </div>
+
+      <div class="compare-card compare-after">
+        <div class="compare-title">
+          <span>✅ WITH MEETMIND + HINDSIGHT MEMORY</span>
+        </div>
+        <div class="compare-desc">
+          Persistent biomimetic graph. Recalls sales dashboard history, prototype review, Friday deadline promise, and preference for concise bulleted updates.
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN WORKSPACE: SECTIONS 1 & 2 -->
+    <div class="workspace-grid">
+      <!-- CARD 1: MEETING DETAILS & SAVE MEETING -->
+      <section class="panel">
+        <div>
+          <div class="panel-header">
+            <div class="panel-tag">Retain Layer</div>
+            <h2 class="panel-title"><span>📥</span> Save Meeting</h2>
+          </div>
+
+          <form id="saveMeetingForm" onsubmit="handleSaveMeeting(event)">
+            <!-- Meeting Details Subcard -->
+            <div class="subcard">
+              <div class="subcard-header">
+                <span>📋</span> Meeting Details
+              </div>
+              <div class="form-row">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="contactName">Contact Name *</label>
+                  <input type="text" id="contactName" placeholder="e.g. Rahul, Shiva" required autocomplete="off" />
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="meetingDate">Meeting Date *</label>
+                  <input type="date" id="meetingDate" required />
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes & Commitments -->
+            <div class="form-group">
+              <label for="meetingNotes">Meeting Notes, Commitments & Preferences *</label>
+              <textarea id="meetingNotes" placeholder="Example:
+Rahul requested a sales analytics dashboard.
+We promised a working prototype by Friday.
+Rahul prefers short progress updates and concise summaries." required></textarea>
+            </div>
+
+            <button type="submit" id="saveBtn" class="btn btn-primary">
+              <span id="saveBtnIcon">💾</span>
+              <span id="saveBtnText">Save to Memory</span>
+            </button>
+          </form>
+        </div>
+
+        <div id="saveToast" class="toast"></div>
+      </section>
+
+      <!-- CARD 2: PREPARE FOR MEETING -->
+      <section class="panel">
+        <div>
+          <div class="panel-header">
+            <div class="panel-tag">Recall & Reflect Layer</div>
+            <h2 class="panel-title"><span>🔍</span> Prepare for Meeting</h2>
+          </div>
+
+          <form id="prepareMeetingForm" onsubmit="handlePrepareMeeting(event)">
+            <div class="subcard">
+              <div class="subcard-header">
+                <span>⚡</span> Target Contact
+              </div>
+              <div class="form-group" style="margin-bottom: 10px;">
+                <label for="prepContactName">Contact Name *</label>
+                <input type="text" id="prepContactName" placeholder="e.g. Rahul, Shiva, Priya" required autocomplete="off" />
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
+                <span style="font-size: 0.75rem; color: var(--text-dim); align-self: center;">Quick Select:</span>
+                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Rahul'">Rahul</button>
+                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Shiva'">Shiva</button>
+                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='Priya'">Priya</button>
+                <button type="button" class="btn-chip" onclick="document.getElementById('prepContactName').value='UnknownPerson'">Unknown</button>
+              </div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.5;">
+              MeetMind queries the Hindsight persistent memory bank to recall previous discussions, commitments, deadlines, and preferences, synthesizing an actionable executive briefing.
+            </p>
+
+            <button type="submit" id="prepBtn" class="btn btn-secondary">
+              <span id="prepBtnIcon">⚡</span>
+              <span id="prepBtnText">Generate Briefing</span>
+            </button>
+          </form>
+        </div>
+
+        <div id="prepToast" class="toast"></div>
+      </section>
+    </div>
+
+    <!-- SECTION 3: EMPTY STATE (Before briefing generation) -->
+    <div id="briefingEmptyState" class="empty-briefing-card">
+      <div class="empty-briefing-icon">📋</div>
+      <div class="empty-briefing-title">No Meeting Briefing Generated Yet</div>
+      <div class="empty-briefing-subtitle">
+        Enter a contact name above, or click one of the quick demo buttons to see MeetMind recall multi-session history with zero hallucination.
+      </div>
+      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+        <button class="btn-chip" onclick="prepareQuick('Rahul')" style="color: #93c5fd; border-color: #3b82f6;">Preview Rahul (3 Past Meetings)</button>
+        <button class="btn-chip" onclick="prepareQuick('Shiva')" style="color: #34d399; border-color: #10b981;">Preview Shiva (Existing Memory)</button>
+        <button class="btn-chip" onclick="prepareQuick('Priya')" style="color: #c4b5fd; border-color: #8b5cf6;">Preview Priya (Isolated Contact)</button>
+        <button class="btn-chip" onclick="prepareQuick('UnknownPerson')" style="color: #f59e0b; border-color: #f59e0b;">Test Unknown (Zero Hallucination)</button>
+      </div>
+    </div>
+
+    <!-- SECTION 3: AI MEETING BRIEFING DISPLAY -->
+    <section id="briefingSection" class="briefing-panel">
+      <!-- ZERO-HALLUCINATION SAFE MODE BANNER -->
+      <div id="zeroHallucinationAlert" style="display: none; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 20px; color: #fbbf24; font-size: 0.88rem;">
+        <strong>🛡️ Zero-Hallucination Safe Mode Active:</strong> No previous memories found for this contact in the Hindsight bank. MeetMind strictly refuses to fabricate commitments, decisions, or dates.
+      </div>
+
+      <div class="briefing-topbar">
+        <div class="briefing-title-area">
+          <h2><span>📋</span> AI Meeting Briefing</h2>
+          <p id="briefingSubtitle">Synthesized from persistent Hindsight memory.</p>
+        </div>
+        <div class="briefing-actions">
+          <!-- VISUAL FEATURE: Memory Status Indicator -->
+          <div id="memoryStatusPill" class="memory-status-indicator active">
+            <span>✓ Hindsight Memory Used</span>
+          </div>
+          <button class="btn-copy" onclick="copyBriefingText()">
+            <span id="copyBtnIcon">📋</span> <span id="copyBtnText">Copy Briefing</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Structured Cards -->
+      <div class="briefing-grid">
+        <!-- Contact Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>👤</span> Contact
+          </div>
+          <div class="briefing-card-content" id="cardContact">--</div>
+        </div>
+
+        <!-- Previous Discussions Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>💬</span> Previous Discussions
+          </div>
+          <div class="briefing-card-content" id="cardDiscussions">--</div>
+        </div>
+
+        <!-- Decisions Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>⚖️</span> Decisions
+          </div>
+          <div class="briefing-card-content" id="cardDecisions">--</div>
+        </div>
+
+        <!-- Commitments Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>🤝</span> Commitments
+          </div>
+          <div class="briefing-card-content" id="cardCommitments">--</div>
+        </div>
+
+        <!-- Deadlines Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>⏰</span> Deadlines
+          </div>
+          <div class="briefing-card-content" id="cardDeadlines">--</div>
+        </div>
+
+        <!-- Preferences Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>🎯</span> Preferences
+          </div>
+          <div class="briefing-card-content" id="cardPreferences">--</div>
+        </div>
+
+        <!-- Follow-ups Card -->
+        <div class="briefing-card">
+          <div class="briefing-card-header">
+            <span>📌</span> Follow-ups
+          </div>
+          <div class="briefing-card-content" id="cardFollowups">--</div>
+        </div>
+
+        <!-- Suggested Questions Card -->
+        <div class="questions-card">
+          <div class="questions-title">
+            <span>💡</span> Suggested Questions for Next Meeting
+          </div>
+          <div id="questionsContainer"></div>
+        </div>
+
+        <!-- Raw Executive Briefing Collapsible -->
+        <div style="grid-column: 1 / -1;">
+          <details style="background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px;">
+            <summary style="cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #cbd5e1; user-select: none;">
+              📄 View Full Generated Executive Briefing
+            </summary>
+            <pre id="rawBriefingText" style="margin-top: 14px; white-space: pre-wrap; font-family: inherit; font-size: 0.92rem; color: #e2e8f0; line-height: 1.6;"></pre>
+          </details>
+        </div>
+
+        <!-- Hindsight Memory Trace (Audit Trail) -->
+        <div style="grid-column: 1 / -1;">
+          <details style="background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px;">
+            <summary style="cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #93c5fd; user-select: none;">
+              🔍 View Hindsight Memory Trace (<span id="traceCount">0</span> facts recalled across meetings)
+            </summary>
+            <div id="memoryTraceList" style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;"></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Set default date to today
+    document.getElementById("meetingDate").value = new Date().toISOString().split("T")[0];
+
+    // Check backend health on load
+    window.addEventListener("DOMContentLoaded", checkHealth);
+
+    async function checkHealth() {
+      const badge = document.getElementById("backendBadge");
+      const text = document.getElementById("backendStatusText");
+      try {
+        const res = await fetch("/health");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.hindsight_connected) {
+            badge.className = "hindsight-status-badge connected";
+            text.innerText = "Hindsight Memory: Connected";
+          } else {
+            badge.className = "hindsight-status-badge degraded";
+            text.innerText = "Hindsight Memory: Degraded";
+          }
+        } else {
+          badge.className = "hindsight-status-badge degraded";
+          text.innerText = "Hindsight Memory: Disconnected";
+        }
+      } catch (err) {
+        badge.className = "hindsight-status-badge degraded";
+        text.innerText = "Hindsight Memory: Offline";
+      }
+    }
+
+    // Demo Presets Data (Exact Hackathon Scenario)
+    const DEMO_MEETINGS = {
+      rahul_1: {
+        contact: "Rahul",
+        date: "2026-09-10",
+        notes: "Rahul requested a sales dashboard. He wants weekly progress updates."
+      },
+      rahul_2: {
+        contact: "Rahul",
+        date: "2026-09-17",
+        notes: "Rahul reviewed the dashboard prototype. He requested export functionality. We promised the updated version by Friday."
+      },
+      rahul_3: {
+        contact: "Rahul",
+        date: "2026-09-24",
+        notes: "Rahul said the dashboard should remain simple. He prefers short explanations."
+      },
+      priya_1: {
+        contact: "Priya",
+        date: "2026-09-15",
+        notes: "Priya requested a redesign of the mobile app onboarding flow. We committed to deliver the design mockups by October 5th. Priya prefers async Slack updates and Figma comments over scheduled video calls."
+      }
+    };
+
+    function fillRahulM1() {
+      const m = DEMO_MEETINGS.rahul_1;
+      document.getElementById("contactName").value = m.contact;
+      document.getElementById("meetingDate").value = m.date;
+      document.getElementById("meetingNotes").value = m.notes;
+      document.getElementById("prepContactName").value = m.contact;
+      showToast("saveToast", "Loaded Rahul Meeting 1 (Sales Dashboard). Click 'Save to Memory'!", "success");
+    }
+
+    function fillRahulM2() {
+      const m = DEMO_MEETINGS.rahul_2;
+      document.getElementById("contactName").value = m.contact;
+      document.getElementById("meetingDate").value = m.date;
+      document.getElementById("meetingNotes").value = m.notes;
+      document.getElementById("prepContactName").value = m.contact;
+      showToast("saveToast", "Loaded Rahul Meeting 2 (Prototype & Friday Promise). Click 'Save to Memory'!", "success");
+    }
+
+    function fillRahulM3() {
+      const m = DEMO_MEETINGS.rahul_3;
+      document.getElementById("contactName").value = m.contact;
+      document.getElementById("meetingDate").value = m.date;
+      document.getElementById("meetingNotes").value = m.notes;
+      document.getElementById("prepContactName").value = m.contact;
+      showToast("saveToast", "Loaded Rahul Meeting 3 (Simplicity & Short Notes). Click 'Save to Memory'!", "success");
+    }
+
+    function fillPriyaM1() {
+      const m = DEMO_MEETINGS.priya_1;
+      document.getElementById("contactName").value = m.contact;
+      document.getElementById("meetingDate").value = m.date;
+      document.getElementById("meetingNotes").value = m.notes;
+      document.getElementById("prepContactName").value = m.contact;
+      showToast("saveToast", "Loaded Priya Meeting 1 (Mobile App & Async Preferences). Click 'Save to Memory'!", "success");
+    }
+
+    function setFlowStep(stepNum) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`flowStep${i}`);
+        if (!el) continue;
+        if (i < stepNum) {
+          el.className = "pipeline-step completed";
+        } else if (i === stepNum) {
+          el.className = "pipeline-step active";
+        } else {
+          el.className = "pipeline-step";
+        }
+      }
+    }
+
+    function prepareQuick(name) {
+      document.getElementById("prepContactName").value = name;
+      document.getElementById("prepareMeetingForm").dispatchEvent(new Event("submit"));
+    }
+
+    // Auto-Run Complete Demo Scenario
+    async function runAutoDemo() {
+      const statusBox = document.getElementById("autoDemoStatus");
+      statusBox.style.display = "block";
+      statusBox.innerHTML = `
+        <div style="font-weight: 700; color: #93c5fd; margin-bottom: 8px;">🚀 Running 60-Second Live Hackathon Demo Scenario:</div>
+        <div id="demoStep1">⏳ [1/4] Storing Rahul Meeting 1 (Sales Dashboard)...</div>
+        <div id="demoStep2">⏳ [2/4] Waiting to store Rahul Meeting 2...</div>
+        <div id="demoStep3">⏳ [3/4] Waiting to store Rahul Meeting 3...</div>
+        <div id="demoStep4">⏳ [4/4] Waiting to store Priya Meeting 1 (Isolation Contact)...</div>
+        <div id="demoStep5">⏳ [5/5] Synthesizing multi-meeting briefing for Rahul...</div>
+      `;
+
+      try {
+        setFlowStep(1);
+        // Step 1: Rahul M1
+        const r1 = await fetch("/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(DEMO_MEETINGS.rahul_1)
+        });
+        if (!r1.ok) throw new Error("Failed to store Rahul M1");
+        document.getElementById("demoStep1").innerHTML = "✅ [1/4] Stored Rahul Meeting 1 (Sales dashboard & weekly updates)";
+
+        setFlowStep(2);
+        // Step 2: Rahul M2
+        document.getElementById("demoStep2").innerHTML = "⏳ [2/4] Storing Rahul Meeting 2 (Prototype & Friday Promise)...";
+        const r2 = await fetch("/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(DEMO_MEETINGS.rahul_2)
+        });
+        if (!r2.ok) throw new Error("Failed to store Rahul M2");
+        document.getElementById("demoStep2").innerHTML = "✅ [2/4] Stored Rahul Meeting 2 (Prototype review, export feature, Friday promise)";
+
+        // Step 3: Rahul M3
+        document.getElementById("demoStep3").innerHTML = "⏳ [3/4] Storing Rahul Meeting 3 (Simplicity & Short Notes)...";
+        const r3 = await fetch("/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(DEMO_MEETINGS.rahul_3)
+        });
+        if (!r3.ok) throw new Error("Failed to store Rahul M3");
+        document.getElementById("demoStep3").innerHTML = "✅ [3/4] Stored Rahul Meeting 3 (Keep simple & short explanations)";
+
+        // Step 4: Priya M1
+        document.getElementById("demoStep4").innerHTML = "⏳ [4/4] Storing Priya Meeting 1 (Mobile App Redesign)...";
+        const rp = await fetch("/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(DEMO_MEETINGS.priya_1)
+        });
+        if (!rp.ok) throw new Error("Failed to store Priya M1");
+        document.getElementById("demoStep4").innerHTML = "✅ [4/4] Stored Priya Meeting 1 (Mobile onboarding, Oct 5th wireframes, async Slack)";
+
+        setFlowStep(3);
+        // Step 5: Synthesize Briefing for Rahul
+        document.getElementById("demoStep5").innerHTML = "⚡ [5/5] Synthesizing multi-meeting briefing for Rahul via Hindsight Reflect...";
+        await prepareQuick("Rahul");
+        setFlowStep(4);
+        document.getElementById("demoStep5").innerHTML = "🎉 [5/5] Demo Complete! Rahul's briefing synthesized across 3 previous meetings. Test 'Prepare Priya' above to verify memory isolation!";
+      } catch (err) {
+        statusBox.innerHTML += `<div style="color: #ef4444; margin-top: 8px;">❌ Demo error: ${err.message}</div>`;
+      }
+    }
+
+    // SECTION 1: Save Meeting Memory (POST /meetings)
+    async function handleSaveMeeting(e) {
+      e.preventDefault();
+      const contact = document.getElementById("contactName").value.trim();
+      const date = document.getElementById("meetingDate").value;
+      const notes = document.getElementById("meetingNotes").value.trim();
+
+      if (!contact) {
+        showToast("saveToast", "Please enter a valid contact name.", "error");
+        return;
+      }
+      if (!notes) {
+        showToast("saveToast", "Please enter meeting notes before saving.", "error");
+        return;
+      }
+
+      setFlowStep(1);
+      const btn = document.getElementById("saveBtn");
+      const icon = document.getElementById("saveBtnIcon");
+      const text = document.getElementById("saveBtnText");
+
+      // Loading state
+      btn.disabled = true;
+      icon.innerHTML = '<div class="spinner"></div>';
+      text.innerText = "Saving to Hindsight Memory...";
+      hideToast("saveToast");
+
+      try {
+        const response = await fetch("/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contact, date, notes }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === "success") {
+          setFlowStep(2);
+          showToast("saveToast", `✓ Successfully saved meeting memory for ${contact} in Hindsight!`, "success");
+          // Pre-fill prepare form
+          document.getElementById("prepContactName").value = contact;
+        } else {
+          showToast("saveToast", `Error: ${data.detail || data.message || "Failed to store memory"}`, "error");
+        }
+      } catch (err) {
+        showToast("saveToast", `Network error: ${err.message}`, "error");
+      } finally {
+        btn.disabled = false;
+        icon.innerText = "💾";
+        text.innerText = "Save to Memory";
+      }
+    }
+
+    // SECTION 2 & 3: Prepare for a Meeting (GET /prepare/{contact})
+    async function handlePrepareMeeting(e) {
+      e.preventDefault();
+      const contact = document.getElementById("prepContactName").value.trim();
+      if (!contact) {
+        showToast("prepToast", "Please enter a contact name to generate a briefing.", "error");
+        return;
+      }
+
+      setFlowStep(3);
+      const btn = document.getElementById("prepBtn");
+      const icon = document.getElementById("prepBtnIcon");
+      const text = document.getElementById("prepBtnText");
+      const briefingSection = document.getElementById("briefingSection");
+      const emptyState = document.getElementById("briefingEmptyState");
+
+      // Loading state
+      btn.disabled = true;
+      icon.innerHTML = '<div class="spinner"></div>';
+      text.innerText = "Synthesizing Briefing...";
+      hideToast("prepToast");
+
+      try {
+        const response = await fetch(`/prepare/${encodeURIComponent(contact)}`);
+        const data = await response.json();
+
+        if (response.ok && data.status === "success") {
+          renderBriefing(contact, data);
+          if (emptyState) emptyState.style.display = "none";
+          briefingSection.style.display = "block";
+          briefingSection.scrollIntoView({ behavior: "smooth" });
+          setFlowStep(4);
+        } else {
+          showToast("prepToast", `Error: ${data.detail || data.message || "Failed to generate briefing"}`, "error");
+        }
+      } catch (err) {
+        showToast("prepToast", `Network error: ${err.message}`, "error");
+      } finally {
+        btn.disabled = false;
+        icon.innerText = "⚡";
+        text.innerText = "Generate Briefing";
+      }
+    }
+
+    // Parse and render the structured briefing cards
+    function renderBriefing(contact, data) {
+      const hasMemories = data.has_memories;
+      const count = data.memory_count || 0;
+      const raw = data.briefing || "";
+      const memories = data.memories || [];
+
+      // 1. Visual Feature: Memory Status Indicator
+      const pill = document.getElementById("memoryStatusPill");
+      if (hasMemories) {
+        pill.className = "memory-status-indicator active";
+        pill.innerHTML = `<span>✓ Hindsight Memory Used (${count} facts recalled across interactions)</span>`;
+      } else {
+        pill.className = "memory-status-indicator empty";
+        pill.innerHTML = `<span>⚠ Zero Hallucination Mode (Not available in memory)</span>`;
+      }
+
+      // Zero-hallucination alert
+      const zeroAlert = document.getElementById("zeroHallucinationAlert");
+      if (zeroAlert) {
+        zeroAlert.style.display = hasMemories ? "none" : "block";
+      }
+
+      document.getElementById("cardContact").innerText = contact;
+
+      // Extract sections from markdown or provide defaults
+      const sections = parseMarkdownSections(raw);
+
+      setCardContent("cardDiscussions", sections["previous discussions"] || "Not available in memory.");
+      setCardContent("cardDecisions", sections["decisions"] || "Not available in memory.");
+      setCardContent("cardCommitments", sections["commitments"] || sections["unresolved commitments"] || "Not available in memory.");
+      setCardContent("cardDeadlines", sections["deadlines"] || "Not available in memory.");
+      setCardContent("cardPreferences", sections["preferences"] || "Not available in memory.");
+      setCardContent("cardFollowups", sections["follow-up items"] || sections["follow-ups"] || "Not available in memory.");
+
+      // Render Full Generated Executive Briefing Text
+      const rawBriefingEl = document.getElementById("rawBriefingText");
+      if (rawBriefingEl) {
+        rawBriefingEl.innerText = raw;
+      }
+
+      // Render Suggested Questions
+      const questionsContainer = document.getElementById("questionsContainer");
+      const questions = extractQuestions(raw);
+      if (questions.length > 0) {
+        questionsContainer.innerHTML = questions.map((q, idx) => `
+          <div class="question-item">
+            <span class="q-number">${idx + 1}</span>
+            <span>${q}</span>
+          </div>
+        `).join("");
+      } else {
+        questionsContainer.innerHTML = `
+          <div class="question-item">
+            <span class="q-number">1</span>
+            <span>What are your primary goals and priorities for our discussion today?</span>
+          </div>
+          <div class="question-item">
+            <span class="q-number">2</span>
+            <span>Are there any key milestones or expectations you would like to align on?</span>
+          </div>
+          <div class="question-item">
+            <span class="q-number">3</span>
+            <span>How do you prefer our team share progress updates moving forward?</span>
+          </div>
+        `;
+      }
+
+      // Render Hindsight Memory Trace
+      const traceCount = document.getElementById("traceCount");
+      const traceList = document.getElementById("memoryTraceList");
+      if (traceCount && traceList) {
+        traceCount.innerText = memories.length;
+        if (memories.length > 0) {
+          traceList.innerHTML = memories.map(m => `
+            <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid #1e293b; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #94a3b8; font-size: 0.75rem; flex-wrap: wrap; gap: 6px;">
+                <span><strong>ID:</strong> ${m.id || 'hindsight-memory'}</span>
+                <span><strong>Type:</strong> ${m.type || 'world'} | <strong>Tags:</strong> ${(m.tags || []).join(', ')}</span>
+              </div>
+              <div style="color: #e2e8f0; line-height: 1.5;">${m.text || ''}</div>
+            </div>
+          `).join("");
+        } else {
+          traceList.innerHTML = `<div style="color: #64748b; font-style: italic; font-size: 0.85rem;">No memory traces found for ${contact}. Zero hallucination enforced.</div>`;
+        }
+      }
+    }
+
+    function setCardContent(elementId, text) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const clean = text.replace(/^#+\s+/gm, "").trim();
+      el.innerText = clean;
+      if (clean.toLowerCase().includes("not available in memory")) {
+        el.classList.add("missing");
+      } else {
+        el.classList.remove("missing");
+      }
+    }
+
+    // Helper to extract sections from markdown headers
+    function parseMarkdownSections(markdown) {
+      const sections = {};
+      const lines = markdown.split("\n");
+      let currentSection = "";
+      let currentBuffer = [];
+
+      for (const line of lines) {
+        const headerMatch = line.match(/^#{1,4}\s*(?:\d+\.\s*)?([^\n]+)/);
+        if (headerMatch) {
+          if (currentSection) {
+            sections[currentSection.toLowerCase()] = currentBuffer.join("\n").trim();
+          }
+          currentSection = headerMatch[1].trim();
+          currentBuffer = [];
+        } else {
+          currentBuffer.push(line);
+        }
+      }
+      if (currentSection) {
+        sections[currentSection.toLowerCase()] = currentBuffer.join("\n").trim();
+      }
+      return sections;
+    }
+
+    // Helper to extract numbered questions
+    function extractQuestions(markdown) {
+      const questions = [];
+      const lines = markdown.split("\n");
+      for (const line of lines) {
+        const qMatch = line.match(/^\s*(?:\d+\.|\*|-)\s+(.+)/);
+        if (qMatch && (line.includes("?") || line.match(/^\s*\d+\.\s+/))) {
+          const text = qMatch[1].replace(/^\*\*|\*\*$/g, "").trim();
+          if (text.includes("?")) {
+            questions.push(text);
+          }
+        }
+      }
+      return questions.slice(0, 3);
+    }
+
+    // Copy to clipboard
+    function copyBriefingText() {
+      const rawText = document.getElementById("rawBriefingText").innerText;
+      if (!rawText) return;
+      navigator.clipboard.writeText(rawText).then(() => {
+        const btnText = document.getElementById("copyBtnText");
+        const orig = btnText.innerText;
+        btnText.innerText = "✓ Copied!";
+        setTimeout(() => { btnText.innerText = orig; }, 2000);
+      }).catch(err => {
+        console.error("Clipboard error:", err);
+      });
+    }
+
+    // Toast helpers
+    function showToast(id, msg, type) {
+      const toast = document.getElementById(id);
+      toast.innerText = msg;
+      toast.className = `toast ${type}`;
+    }
+
+    function hideToast(id) {
+      const toast = document.getElementById(id);
+      toast.style.display = "none";
+    }
+  </script>
+</body>
+</html>
